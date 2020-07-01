@@ -31,7 +31,7 @@ $this->load->view('dist/_partials/header');
                       </button>
                     </div>
                     <div class="modal-body">
-                      <p>Modal body text goes here.</p>
+                      <p>Modal body text goes here testset.</p>
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-primary">Save changes</button>

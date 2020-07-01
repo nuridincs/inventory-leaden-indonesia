@@ -8,9 +8,8 @@ $this->load->view('_partials/header');
     <div class="section-header">
       <h1>Data Barang</h1>
       <div class="section-header-breadcrumb">
-        <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-        <div class="breadcrumb-item"><a href="#">Modules</a></div>
-        <div class="breadcrumb-item">DataTables</div>
+        <div class="breadcrumb-item active"><a href="#">Master</a></div>
+        <div class="breadcrumb-item">Barang</div>
       </div>
     </div>
 
@@ -18,10 +17,8 @@ $this->load->view('_partials/header');
       <div class="row">
         <div class="col-12">
           <div class="card">
-            <!-- <div class="card-header">
-              <h4>Basic DataTables</h4>
-            </div> -->
             <div class="card-body">
+              <a href="form/form_barang/tambah" class="btn btn-icon btn-info mb-4">Tambah Barang</a>
               <div class="table-responsive">
                 <table class="table table-striped" id="table-1">
                   <thead>
@@ -33,12 +30,20 @@ $this->load->view('_partials/header');
                       <th>Part Number</th>
                       <th>Minimum Stok</th>
                       <th>Bill Of Material</th>
+                      <th>ROP</th>
                       <!-- <th>Status</th> -->
                       <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                  <?php $no = 0; foreach($barang as $data) { $no++; ?>
+                  <?php
+                    $no = 0;
+                    $leadtime = 30;
+                    foreach($barang as $data) {
+                      $no++;
+
+                      $rop = $leadtime * $data->kebutuhan_bahan + $data->minimum_stok;
+                  ?>
                     <tr>
                       <td>
                         <?= $no; ?>
@@ -51,8 +56,11 @@ $this->load->view('_partials/header');
                         <?= $data->minimum_stok ?>
                       </td>
                       <td><?= $data->bom ?></td>
-                      <!-- <td><div class="badge badge-success">Completed</div></td> -->
-                      <td><a href="#" class="btn btn-secondary">Detail</a></td>
+                      <td><?= $rop ?></td>
+                      <td>
+                        <a href="form/form_barang/edit" class="btn btn-icon btn-primary" data-toggle="tooltip" data-placement="top" title data-original-title="Edit Barang"><i class="far fa-edit"></i></a>
+                        <button class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="top" title data-original-title="Hapus Barang" data-confirm="Apa Anda yakin ingin menghapus data ini?" data-confirm-yes="alert('Deleted :)');"><i class="fas fa-trash"></i></button>
+                      </td>
                     </tr>
                   <?php } ?>
                   </tbody>

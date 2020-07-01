@@ -5,7 +5,7 @@ $this->load->view('_partials/header');
 <div class="main-content">
   <section class="section">
     <div class="section-header">
-      <h1>Buat Permintaan</h1>
+      <h1><?= $action ?> Permintaan</h1>
       <div class="section-header-breadcrumb">
         <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
         <div class="breadcrumb-item"><a href="#">Form</a></div>
@@ -22,24 +22,24 @@ $this->load->view('_partials/header');
                 <div class="form-group">
                   <label>Part Name / Part Number</label>
                   <select class="form-control" name="part_number">
-                    <option>Option 1</option>
-                    <option>Option 2</option>
-                    <option>Option 3</option>
+                  <?php foreach($barang as $data) { ?>
+                    <option value="<?= $data->part_number ?>"><?= $data->part_name.' - '.$data->part_number ?></option>
+                  <?php } ?>
                   </select>
                 </div>
                 <div class="form-group">
                   <label>Type</label>
                   <select class="form-control" name="type">
-                    <option>Option 1</option>
-                    <option>Option 2</option>
-                    <option>Option 3</option>
+                  <?php foreach($type as $data) { ?>
+                    <option value="<?= $data->id ?>"><?= $data->jenis_type ?></option>
+                  <?php } ?>
                   </select>
                 </div>
                 <div class="form-group">
                   <label>Jumlah Barang</label>
-                  <input type="text" class="form-control invoice-input">
+                  <input type="text" class="form-control invoice-input" value="<?= $action == 'edit' ? '200' : '' ?>">
                 </div>
-                <button class="btn btn-primary btn-block">Simpan</button>
+                <button class="btn btn-primary btn-block">Submit</button>
               </form>
             </div>
           </div>
