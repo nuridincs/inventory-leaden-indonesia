@@ -248,4 +248,32 @@
 
       $pdf->Output('contoh_report.pdf', 'I');
     }
+
+    public function getBarangByType()
+    {
+      $request = $this->input->post();
+      $data = $this->barang->getDataByType($request['id']);
+
+      $_view = '';
+      if (count($data) > 0) {
+        $_view .= '<div class="row mb-4">';
+          $_view .= '<div class="col"><strong>Part Number</strong><br></div>';
+          $_view .= '<div class="col"><strong>BOM</strong><br></div>';
+          $_view .= '<div class="col"><strong>Jumlah Barang</strong><br></div>';
+        $_view .= '</div>';
+
+        foreach($data as $value) {
+          $_view .= '<div class="row mb-4">';
+            $_view .= '<div class="col">'.$value->part_number.'</div>';
+            $_view .= '<div class="col">'.$value->bom.' Unit</div>';
+            $_view .= '<div class="col">';
+                $_view .= '<input type="text" class="form-control invoice-input w-50" placeholder="Masukan Jumlah" require />';
+            $_view .= '</div>';
+          $_view .= '</div>';
+        }
+      } else {
+        $_view .= '<h2 class="mb-4 text-center">Data Barang Tidak ditemukan</h2>';
+      }
+      echo $_view;
+    }
   }

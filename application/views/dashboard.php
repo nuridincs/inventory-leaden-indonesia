@@ -12,7 +12,7 @@ $this->load->view('_partials/header');
     </div>
 
     <div class="section-body">
-      <h1>Selamat Datang di aplikasi inventori PT. FAJAR UTAMA</h1>
+      <h1>Selamat Datang di aplikasi inventori PT. LEADEN INDONESIA</h1>
     </div>
   </section>
 </div>

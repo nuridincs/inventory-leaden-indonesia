@@ -19,25 +19,15 @@ $this->load->view('_partials/header');
             <div class="card-body">
               <form action="/actionAdd/buatPermintaan" method="post">
                 <div class="form-group">
-                  <label>Part Name / Part Number</label>
-                  <select class="form-control" name="part_number">
-                  <?php foreach($barang as $data) { ?>
-                    <option value="<?= $data->part_number ?>"><?= $data->part_name.' - '.$data->part_number ?></option>
-                  <?php } ?>
-                  </select>
-                </div>
-                <div class="form-group">
                   <label>Type</label>
-                  <select class="form-control" name="type">
+                  <select class="form-control" name="jenis_type" id="jenis_type">
+                  <option value="0">--Silahkan Pilih Type--</option>
                   <?php foreach($type as $data) { ?>
-                    <option value="<?= $data->id ?>"><?= $data->jenis_type ?></option>
+                    <option value="<?= $data->jenis_type ?>"><?= $data->jenis_type ?></option>
                   <?php } ?>
                   </select>
                 </div>
-                <div class="form-group">
-                  <label>Jumlah Barang</label>
-                  <input type="text" class="form-control invoice-input" value="<?= $action == 'edit' ? '200' : '' ?>">
-                </div>
+                <div id="content"></div>
                 <button class="btn btn-primary btn-block">Submit</button>
               </form>
             </div>
@@ -47,3 +37,21 @@ $this->load->view('_partials/header');
     </div>
   </div>
 </div>
+<?php $this->load->view('_partials/js'); ?>
+
+<script>
+$( "#jenis_type" ).change(function() {
+  const jenis_type = $('#jenis_type').val();
+
+  const formData = {
+    idName: 'id_type',
+    id: jenis_type,
+    table1: 'app_barang_masuk',
+    table2: 'app_barang',
+  }
+
+  $.post("<?= base_urL('barang/getBarangByType') ?>", formData, function( data ) {
+    $('#content').html(data);
+  });
+});
+</script>
