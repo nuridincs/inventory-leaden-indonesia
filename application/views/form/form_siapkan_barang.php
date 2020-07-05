@@ -31,7 +31,7 @@ $this->load->view('_partials/header');
                 </div>
 
                 <div id="content"></div>
-                <button class="btn btn-primary btn-block">Submit</button>
+                <button class="btn btn-primary btn-block" id="submitBarangKeluar">Submit</button>
               </form>
             </div>
           </div>
@@ -44,7 +44,7 @@ $this->load->view('_partials/header');
 <?php $this->load->view('_partials/js'); ?>
 
 <script>
-$( "#jenis_type" ).change(function() {
+$("#jenis_type").change(function() {
   const jenis_type = $('#jenis_type').val();
 
   const formData = {
@@ -58,4 +58,29 @@ $( "#jenis_type" ).change(function() {
     $('#content').html(data);
   });
 });
+
+function checkSS(part_number) {
+  const jumlah_barang = document.getElementById("jumlah_barang"+part_number).value;
+
+  const formData = {
+    idName: 'part_number',
+    id: part_number,
+    table: 'app_barang',
+    jumlah_barang: jumlah_barang
+  }
+
+  setTimeout(() => {
+    $.post("<?= base_urL('barang/checkSafetyStock') ?>", formData, function( data ) {
+      const response = JSON.parse(data);
+
+      if (response.status === 'failed') {
+        $('#submitBarangKeluar').prop('disabled', true);
+        $('#error'+part_number).attr('style', 'display:inline-block;');
+      } else {
+        $('#submitBarangKeluar').prop('disabled', false);
+        $('#error'+part_number).attr('style', 'display:none;');
+      }
+    });
+  }, 1000);
+}
 </script>

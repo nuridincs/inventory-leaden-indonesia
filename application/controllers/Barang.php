@@ -253,7 +253,7 @@
           $html .= '<tr>
             <td align="center">'.$no.'</td>
             <td align="center">'.$item->part_number.'</td>
-            <td align="center">'.$item->tanggal_masuk.'</td>
+            <td align="center">'.date('Y-m-d', strtotime($item->tanggal_masuk)).'</td>
             <td align="center">'.$item->tanggal_keluar.'</td>
             <td align="center">'.$item->jumlah_barang_keluar.'</td>
           </tr>';
@@ -276,6 +276,8 @@
       $data = $this->barang->getDataByType($request['id']);
 
       $_view = '';
+      $index = 0;
+
       if (count($data) > 0) {
         $_view .= '<div class="row mb-4">';
           $_view .= '<div class="col"><strong>Part Number</strong><br></div>';
@@ -288,9 +290,12 @@
             $_view .= '<div class="col">'.$value->part_number.'</div>';
             $_view .= '<div class="col">'.$value->bom.' Unit</div>';
             $_view .= '<div class="col">';
-                $_view .= '<input type="text" class="form-control invoice-input w-50" placeholder="Masukan Jumlah" require />';
+              $_view .= '<input type="text" class="form-control invoice-input w-50" name="jumlah_barang[]" id="jumlah_barang'.$value->part_number.'" placeholder="Masukan Jumlah" require onkeyup="checkSS('.$value->part_number.')" />';
+              $_view .= '<input type="hidden" class="form-control invoice-input w-50" name="part_number[]" value="'.$value->part_number.'" />';
+              $_view .= '<small class="badge badge-danger mt-2" style="display:none" id="error'.$value->part_number.'">Jumlah Melebihi Safety Stok</small>';
             $_view .= '</div>';
           $_view .= '</div>';
+          $index++;
         }
       } else {
         $_view .= '<h2 class="mb-4 text-center">Data Barang Tidak ditemukan</h2>';
@@ -344,7 +349,35 @@
 
     public function updateBarangKeluar()
     {
-      print_r($_POST);
+      $request = $this->input->post();
+      $tmpArrayData = [];
+
+      for ($i=0; $i < count($request['jumlah_barang']); $i++) {
+        $tmpArrayData[] = [
+          'part_number' => $request['part_number'][$i],
+          'jumlah_barang' => $request['jumlah_barang'][$i],
+        ];
+      }
+
+      for ($ii=0; $ii < count($tmpArrayData) ; $ii++) {
+        if ($tmpArrayData[$ii]['jumlah_barang'] != "" || $tmpArrayData[$ii]['jumlah_barang'] != null) {
+          $table = 'app_barang_masuk';
+          $request = array('jumlah_barang' => $tmpArrayData[$ii]['jumlah_barang']);
+          $idName = 'part_number';
+          $id = $tmpArrayData[$ii]['part_number'];
+
+          $formBarangKeluar = [
+            'part_number' => $tmpArrayData[$ii]['part_number'],
+            'jumlah_barang_keluar' => $tmpArrayData[$ii]['jumlah_barang'],
+            'tanggal_keluar' => date('Y-m-d'),
+          ];
+
+          $this->barang->updateData($table, $request, $idName, $id);
+          $this->db->insert('app_barang_keluar', $formBarangKeluar);
+        }
+      }
+
+      redirect('barang/listBarangKeluar');
     }
 
     private function generateData($request)
@@ -367,5 +400,31 @@
 
       $this->db->where($idName, $id);
       $this->db->delete($table);
+    }
+
+    public function checkSafetyStock()
+    {
+      $id = $this->input->post('id');
+      $idName = $this->input->post('idName');
+      $table = $this->input->post('table');
+      $jumlah_barang = $this->input->post('jumlah_barang');
+
+      $getSS = $this->barang->getDataByID($table, $idName, $id);
+      $getStok = $this->barang->getDataByID('app_barang_masuk', $idName, $id);
+      $calculateStok = $getStok->jumlah_barang - $getSS->minimum_stok;
+
+      $data = [
+        'status' => 'success',
+        'msg' => ''
+      ];
+
+      if ($calculateStok < $jumlah_barang) {
+        $data = [
+          'status' => 'failed',
+          'msg' => 'Jumlah Stok Barang yang Anda inginkan dalam batas limit, silahkan lakukan PO'
+        ];
+      }
+
+      echo json_encode($data);
     }
   }
