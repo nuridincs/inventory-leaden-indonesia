@@ -18,7 +18,7 @@ $this->load->view('_partials/header');
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <a href="form/form_user/tambah" class="btn btn-primary mb-4">Buat User</a>
+              <a href="form/form_user/tambah/0" class="btn btn-primary mb-4">Buat User</a>
               <div class="table-responsive">
                 <table class="table table-striped" id="table-1">
                   <thead>
@@ -48,8 +48,8 @@ $this->load->view('_partials/header');
                       </td>
                       <td><?= $data->role ?></td>
                       <td>
-                        <a href="form/form_user/edit" class="btn btn-icon btn-primary" data-toggle="tooltip" data-placement="top" title data-original-title="Edit User"><i class="far fa-edit"></i></a>
-                        <button class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="top" title data-original-title="Hapus Barang" data-confirm="Apa Anda yakin ingin menghapus data ini?" data-confirm-yes="alert('Deleted :)');"><i class="fas fa-trash"></i></button>
+                        <a href="form/form_user/edit/<?= $data->id ?>" class="btn btn-icon btn-primary" data-toggle="tooltip" data-placement="top" title data-original-title="Edit User"><i class="far fa-edit"></i></a>
+                        <button class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="top" title data-original-title="Hapus Barang" data-confirm="Apa Anda yakin ingin menghapus data ini?" data-confirm-yes="deleteData(<?= $data->id ?>);;"><i class="fas fa-trash"></i></button>
                       </td>
                     </tr>
                   <?php } ?>
@@ -64,3 +64,17 @@ $this->load->view('_partials/header');
   </section>
 </div>
 <?php $this->load->view('_partials/footer'); ?>
+
+<script>
+  function deleteData(id) {
+    const formData = {
+      id: id,
+      idName: 'id',
+      table: 'app_users'
+    }
+
+    $.post('<?= base_url('barang/actionDelete'); ?>', formData, function( data ) {
+      window.location.reload();
+    });
+  }
+</script>

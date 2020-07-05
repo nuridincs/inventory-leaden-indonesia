@@ -20,8 +20,15 @@
             <div class="card card-primary">
               <div class="card-header"><h4>Login System</h4></div>
 
+              <?php if($this->session->flashdata('msg')){ ?>
+                <div class="alert alert-danger alert-dismissible">
+                  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                  <strong>Warning!</strong><br> <?php echo $this->session->flashdata('msg');?>
+                </div>
+              <?php } ?>
+
               <div class="card-body">
-                <form method="POST" action="login/processLogin" class="needs-validation" novalidate="">
+                <form method="POST" action="<?= base_url('login/processLogin') ?>" class="needs-validation" novalidate="">
                   <div class="form-group">
                     <label for="email">Email</label>
                     <input id="email" type="email" class="form-control" value="admin@gmail.com" name="email" tabindex="1" required autofocus>
@@ -34,7 +41,7 @@
                     <div class="d-block">
                     	<label for="password" class="control-label">Password</label>
                       <!-- <div class="float-right">
-                        <a href="<?php echo base_url(); ?>dist/auth_forgot_password" class="text-small">
+                        <a href="<?php //echo base_url(); ?>dist/auth_forgot_password" class="text-small">
                           Forgot Password?
                         </a>
                       </div> -->
@@ -44,14 +51,6 @@
                       please fill in your password
                     </div>
                   </div>
-
-                  <!-- <div class="form-group">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" name="remember" class="custom-control-input" tabindex="3" id="remember-me">
-                      <label class="custom-control-label" for="remember-me">Remember Me</label>
-                    </div>
-                  </div> -->
-
                   <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
                       Login

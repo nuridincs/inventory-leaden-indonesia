@@ -5,16 +5,15 @@
     public function __construct()
     {
       parent::__construct();
-      // $this->load->library('Pdf');
 
       $this->load->model('M_barang', 'barang');
       $this->load->library('Pdf');
 
-      // $cekUserLogin = $this->session->userdata('status');
+      $cekUserLogin = $this->session->userdata('status');
 
-      // if ($cekUserLogin != 'login') {
-      //   redirect('auth');
-      // }
+      if ($cekUserLogin != 'login') {
+        redirect('login');
+      }
     }
 
     public function index()
@@ -90,6 +89,7 @@
         'action' => $action,
         'barang' => $this->getData($form, 'app_barang'),
         'type' => $this->getData($form, 'app_type'),
+        'role' => $this->barang->getData('app_role'),
         'dtlBarang' => $dtlBarang
       );
 
@@ -105,6 +105,10 @@
 
       if($form == 'form_permintaan') {
         $result = $this->barang->getDataByID('app_barang_masuk', 'part_number', $id);
+      }
+
+      if($form == 'form_user') {
+        $result = $this->barang->getDataByID('app_users', 'id', $id);
       }
 
       return $result;
@@ -305,10 +309,31 @@
 
     public function actionAdd($table)
     {
+
       $request = $this->input->post();
+
+      if ($table == 'app_barang') {
+        $redirect = '/listMasterBarang';
+      }
+
+      if ($table == 'app_barang_masuk') {
+        $redirect = '/listBarangMasuk';
+      }
+
+      if ($table == 'app_users') {
+        $redirect = '/listUser';
+
+        $request = [
+          'nama' => $this->input->post('nama'),
+          'email' => $this->input->post('email'),
+          'password' => md5($this->input->post('password')),
+          'role' => $this->input->post('role'),
+        ];
+      }
+
       $this->barang->addData($table, $request);
 
-      redirect('barang');
+      redirect('barang'.$redirect);
     }
 
     public function actionUpdate($table, $id)
@@ -326,10 +351,32 @@
         $redirect = '/listBarangMasuk';
       }
 
+      if ($table == 'app_users') {
+        $idName = 'id';
+        $redirect = '/listUser';
+      }
+
       $request = $this->input->post();
 
       if (isset($request['status_barang']) && $request['status_barang'] == 0) {
         $request = $this->generateData($this->input->post());
+      }
+
+      if ($table == 'app_users') {
+        if ($this->input->post('password') != '') {
+          $request = [
+            'nama' => $this->input->post('nama'),
+            'email' => $this->input->post('email'),
+            'password' => md5($this->input->post('password')),
+            'role' => $this->input->post('role'),
+          ];
+        } else {
+          $request = [
+            'nama' => $this->input->post('nama'),
+            'email' => $this->input->post('email'),
+            'role' => $this->input->post('role'),
+          ];
+        }
       }
 
       $this->barang->updateData($table, $request, $idName, $id);
