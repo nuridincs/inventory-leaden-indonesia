@@ -18,27 +18,38 @@ $this->load->view('_partials/header');
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <form action="/actionAdd/buatPermintaan" method="post">
+              <?php $url = ($action == 'edit' ? 'barang/actionUpdate/app_barang_masuk/'.$dtlBarang->part_number : 'barang/actionAdd/app_barang_masuk') ?>
+              <form action="<?= base_url($url); ?>" method="post">
+                <?php if ($dtlBarang->status_barang == 0): ?>
+                  <input type="hidden" class="form-control invoice-input" value="<?= $action == 'edit' ? $dtlBarang->status_barang : '' ?>" name="status_barang">
+                <?php endif; ?>
+
                 <div class="form-group">
-                  <label>Part Name / Part Number</label>
-                  <select class="form-control" name="part_number">
-                  <?php foreach($barang as $data) { ?>
-                    <option value="<?= $data->part_number ?>"><?= $data->part_name.' - '.$data->part_number ?></option>
-                  <?php } ?>
-                  </select>
+                  <label>Part Number</label>
+                  <input type="text" class="form-control invoice-input" disabled value="<?= $action == 'edit' ? $dtlBarang->part_number : '' ?>" name="part_number">
                 </div>
+
                 <div class="form-group">
                   <label>Type</label>
-                  <select class="form-control" name="type">
-                  <?php foreach($type as $data) { ?>
-                    <option value="<?= $data->id ?>"><?= $data->jenis_type ?></option>
-                  <?php } ?>
+
+                  <select class="form-control" name="id_type">
+                  <?php
+                    foreach($type as $data) {
+                      if ($dtlBarang->id_type == $data->jenis_type) {
+                        echo '<option value="'.$data->jenis_type.'" selected>'.$data->jenis_type.'</option>';
+                      } else {
+                        echo '<option value="'.$data->jenis_type.'">'.$data->jenis_type.'</option>';
+                      }
+                    }
+                  ?>
                   </select>
                 </div>
+
                 <div class="form-group">
                   <label>Jumlah Barang</label>
-                  <input type="text" class="form-control invoice-input" value="<?= $action == 'edit' ? '200' : '' ?>">
+                  <input type="text" class="form-control invoice-input" value="<?= $action == 'edit' ? $dtlBarang->jumlah_barang : '' ?>" name="jumlah_barang">
                 </div>
+
                 <button class="btn btn-primary btn-block">Submit</button>
               </form>
             </div>

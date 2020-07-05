@@ -19,7 +19,7 @@ $this->load->view('_partials/header');
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <a href="form/form_siapkan_barang/siapkan" class="btn btn-info mb-4">Siapkan Barang</a>
+              <a href="form/form_siapkan_barang/siapkan/0" class="btn btn-info mb-4">Siapkan Barang</a>
               <div class="table-responsive">
                 <table class="table table-striped" id="table-1">
                   <thead>

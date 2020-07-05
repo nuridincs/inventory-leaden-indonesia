@@ -52,4 +52,25 @@
 
       return $query->result();
     }
+
+    public function addData($table, $data)
+    {
+      $this->db->insert($table, $data);
+    }
+
+    public function updateData($table, $data, $idName, $id)
+    {
+      $this->db->where($idName, $id);
+      $this->db->update($table, $data);
+    }
+
+    public function getDataByID($table, $idName, $id)
+    {
+      $query = $this->db->select('*')
+              ->from($table)
+              ->where($idName, $id)
+              ->get();
+
+      return $query->row();
+    }
   }

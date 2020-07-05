@@ -18,7 +18,7 @@ $this->load->view('_partials/header');
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <a href="form/form_barang/tambah" class="btn btn-icon btn-info mb-4">Tambah Barang</a>
+              <a href="form/form_barang/tambah/0" class="btn btn-icon btn-info mb-4">Tambah Barang</a>
               <div class="table-responsive">
                 <table class="table table-striped" id="table-1">
                   <thead>
@@ -58,8 +58,8 @@ $this->load->view('_partials/header');
                       <td><?= $data->bom ?></td>
                       <td><?= $rop ?></td>
                       <td>
-                        <a href="form/form_barang/edit" class="btn btn-icon btn-primary" data-toggle="tooltip" data-placement="top" title data-original-title="Edit Barang"><i class="far fa-edit"></i></a>
-                        <button class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="top" title data-original-title="Hapus Barang" data-confirm="Apa Anda yakin ingin menghapus data ini?" data-confirm-yes="alert('Deleted :)');"><i class="fas fa-trash"></i></button>
+                        <a href="form/form_barang/edit/<?= $data->part_number ?>" class="btn btn-icon btn-primary" data-toggle="tooltip" data-placement="top" title data-original-title="Edit Barang"><i class="far fa-edit"></i></a>
+                        <button class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="top" title data-original-title="Hapus Barang" data-confirm="Apa Anda yakin ingin menghapus data ini?" data-confirm-yes="deleteData(<?= $data->part_number ?>);"><i class="fas fa-trash"></i></button>
                       </td>
                     </tr>
                   <?php } ?>
@@ -74,3 +74,17 @@ $this->load->view('_partials/header');
   </section>
 </div>
 <?php $this->load->view('_partials/footer'); ?>
+
+<script>
+  function deleteData(id) {
+    const formData = {
+      id: id,
+      idName: 'part_number',
+      table: 'app_barang'
+    }
+
+    $.post('<?= base_url('barang/actionDelete'); ?>', formData, function( data ) {
+      window.location.reload();
+    });
+  }
+</script>

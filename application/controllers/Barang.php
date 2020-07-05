@@ -77,16 +77,37 @@
       $this->load->view('laporan', $data);
     }
 
-    public function form($form, $action)
+    public function form($form, $action, $id)
     {
+      $dtlBarang = [];
+
+      if($action == 'edit') {
+        $dtlBarang = $this->getDataByAction($form, $id);
+      }
+
       $data = array(
         'title' => "PT. FAJAR UTAMA | Form ". $form,
         'action' => $action,
         'barang' => $this->getData($form, 'app_barang'),
         'type' => $this->getData($form, 'app_type'),
+        'dtlBarang' => $dtlBarang
       );
 
       $this->load->view('form/'.$form, $data);
+    }
+
+    private function getDataByAction($form, $id)
+    {
+      $result = [];
+      if($form == 'form_barang') {
+        $result = $this->barang->getDataByID('app_barang', 'part_number', $id);
+      }
+
+      if($form == 'form_permintaan') {
+        $result = $this->barang->getDataByID('app_barang_masuk', 'part_number', $id);
+      }
+
+      return $result;
     }
 
     public function getData($form, $table)
@@ -275,5 +296,76 @@
         $_view .= '<h2 class="mb-4 text-center">Data Barang Tidak ditemukan</h2>';
       }
       echo $_view;
+    }
+
+    public function actionAdd($table)
+    {
+      $request = $this->input->post();
+      $this->barang->addData($table, $request);
+
+      redirect('barang');
+    }
+
+    public function actionUpdate($table, $id)
+    {
+      $idName = 'part_number';
+      $redirect = '/';
+
+      if ($table == 'app_barang') {
+        $idName = 'part_number';
+        $redirect = '/listMasterBarang';
+      }
+
+      if ($table == 'app_barang_masuk') {
+        $idName = 'part_number';
+        $redirect = '/listBarangMasuk';
+      }
+
+      $request = $this->input->post();
+
+      if (isset($request['status_barang']) && $request['status_barang'] == 0) {
+        $request = $this->generateData($this->input->post());
+      }
+
+      $this->barang->updateData($table, $request, $idName, $id);
+
+      redirect('barang'.$redirect);
+    }
+
+    public function updateStatus()
+    {
+      $table = $this->input->post('table');
+      $id = $this->input->post('id');
+      $idName = $this->input->post('idName');
+      $request = $this->input->post('data');
+
+      $this->barang->updateData($table, $request, $idName, $id);
+    }
+
+    public function updateBarangKeluar()
+    {
+      print_r($_POST);
+    }
+
+    private function generateData($request)
+    {
+      $data = [
+        'id_type' => $request['id_type'],
+        'jumlah_barang' => $request['jumlah_barang'],
+        'status_permintaan' => 'pending',
+        'status_barang' => 2,
+      ];
+
+      return $data;
+    }
+
+    public function actionDelete()
+    {
+      $id = $this->input->post('id');
+      $idName = $this->input->post('idName');
+      $table = $this->input->post('table');
+
+      $this->db->where($idName, $id);
+      $this->db->delete($table);
     }
   }

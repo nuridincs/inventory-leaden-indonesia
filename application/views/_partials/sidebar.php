@@ -7,7 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <a href="<?php echo base_url(); ?>dist/index">PT. LEADEN INDONESIA</a>
           </div>
           <div class="sidebar-brand sidebar-brand-sm">
-            <a href="<?php echo base_url(); ?>dist/index">Fu</a>
+            <a href="<?php echo base_url(); ?>dist/index">LI</a>
           </div>
           <ul class="sidebar-menu">
             <li class="<?php echo $this->uri->segment(2) == '' || $this->uri->segment(2) == 'index' || $this->uri->segment(2) == 'index_0' ? 'active' : ''; ?>">

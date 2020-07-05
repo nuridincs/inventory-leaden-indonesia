@@ -15,23 +15,27 @@ $this->load->view('_partials/header');
     <div class="section-body">
       <div class="row">
         <div class="col-12">
+
           <div class="card">
             <div class="card-body">
-              <form action="/actionAdd/buatPermintaan" method="post">
+              <form action="<?= base_url('barang/updateBarangKeluar') ?>/actionAdd/buatPermintaan" method="post">
                 <div class="form-group">
                   <label>Type</label>
+
                   <select class="form-control" name="jenis_type" id="jenis_type">
-                  <option value="0">--Silahkan Pilih Type--</option>
-                  <?php foreach($type as $data) { ?>
-                    <option value="<?= $data->jenis_type ?>"><?= $data->jenis_type ?></option>
-                  <?php } ?>
+                    <option value="0">--Silahkan Pilih Type--</option>
+                    <?php foreach($type as $data) { ?>
+                      <option value="<?= $data->jenis_type ?>"><?= $data->jenis_type ?></option>
+                    <?php } ?>
                   </select>
                 </div>
+
                 <div id="content"></div>
                 <button class="btn btn-primary btn-block">Submit</button>
               </form>
             </div>
           </div>
+
         </div>
       </div>
     </div>
