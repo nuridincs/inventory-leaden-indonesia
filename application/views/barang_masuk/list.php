@@ -31,7 +31,7 @@ $this->load->view('_partials/header');
                       <th>Part Name</th>
                       <th>Part Number</th>
                       <th>Jenis Type</th>
-                      <!-- <th>ROP</th> -->
+                      <th>ROP</th>
                       <th>Jumlah Barang</th>
                       <th>Ket.</th>
                       <th>Status Barang</th>
@@ -47,6 +47,7 @@ $this->load->view('_partials/header');
                       $no++;
                       $rop = $leadtime * $data->kebutuhan_bahan + $data->minimum_stok;
                       $status_barang = '<div class="badge badge-danger"><i class="fa fa-times" aria-hidden="true"></i> Tidak Tersedia</div>';
+                      $limit = '';
 
                       if ($data->status_barang == 1) {
                         $status_barang = '<div class="badge badge-success"><i class="fa fa-check"></i> Tersedia</div>';
@@ -59,6 +60,10 @@ $this->load->view('_partials/header');
                       if ($data->status_barang == 3) {
                         $status_barang = '<div class="badge badge-primary"><i class="fa fa-spinner"></i>  Sedang di Proses</div>';
                       }
+
+                      if ($rop > $data->jumlah_barang) {
+                        $limit = '<span class="badge badge-danger">melebihi batas ROP</span>';
+                      }
                   ?>
                     <tr>
                       <td>
@@ -69,9 +74,9 @@ $this->load->view('_partials/header');
                       <td class="align-middle">
                         <?= $data->id_type ?>
                       </td>
-                      <!-- <td><?= $rop ?></td> -->
+                      <td><?= $rop ?></td>
                       <td>
-                        <?= $data->jumlah_barang ?>
+                        <?= $data->jumlah_barang.' '.$limit ?>
                       </td>
                       <td><?= $data->keterangan ?></td>
                       <td><?= $status_barang ?></td>
