@@ -19,6 +19,7 @@ $this->load->view('_partials/header');
         <div class="col-12">
           <div class="card">
             <div class="card-body">
+            <a href="form/form_permintaan/tambah/0" class="btn btn-primary mb-4">Buat Permintaan</a>
               <div class="table-responsive">
                 <input type="hidden" id="idSelected">
 
