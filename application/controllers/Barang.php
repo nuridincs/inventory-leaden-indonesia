@@ -445,8 +445,19 @@
       $idName = $this->input->post('idName');
       $table = $this->input->post('table');
 
-      $this->db->where($idName, $id);
-      $this->db->delete($table);
+      if ($table == 'app_barang') {
+        $this->db->where('part_number', $id);
+        $this->db->delete('app_barang_keluar');
+
+        $this->db->where('part_number', $id);
+        $this->db->delete('app_barang_masuk');
+
+        $this->db->where($idName, $id);
+        $this->db->delete($table);
+      } else {
+        $this->db->where($idName, $id);
+        $this->db->delete($table);
+      }
     }
 
     public function checkSafetyStock()

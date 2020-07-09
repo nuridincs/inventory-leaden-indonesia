@@ -97,7 +97,7 @@ $this->load->view('_partials/header');
                           <a href="form/form_permintaan/edit/<?= $data->part_number ?>" class="btn btn-icon btn-info" data-toggle="tooltip" data-placement="top" title data-original-title="Buat Permintaan"><i class="fa fa-reply-all" aria-hidden="true"></i></a>
                         <?php } ?>
 
-                        <button class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="top" title data-original-title="Hapus Barang" data-confirm="Apa Anda yakin ingin menghapus data ini?" data-confirm-yes="alert('Deleted :)');"><i class="fas fa-trash"></i></button>
+                        <button class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="top" title data-original-title="Hapus Barang" data-confirm="Apa Anda yakin ingin menghapus data ini?" data-confirm-yes="deleteData('<?= $data->part_number ?>');"><i class="fas fa-trash"></i></button>
                       </td>
                     </tr>
                   <?php } ?>
@@ -176,6 +176,18 @@ $this->load->view('_partials/header');
 
   function getID(id) {
     $('#idSelected').val(id);
+  }
+
+  function deleteData(id) {
+    const formData = {
+      id: id,
+      idName: 'part_number',
+      table: 'app_barang_masuk'
+    }
+
+    $.post('<?= base_url('barang/actionDelete'); ?>', formData, function( data ) {
+      window.location.reload();
+    });
   }
 </script>
 
