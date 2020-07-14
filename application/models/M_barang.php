@@ -48,6 +48,7 @@
               ->from('app_barang_masuk')
               ->join('app_barang', 'app_barang.part_number=app_barang_masuk.part_number')
               ->where('app_barang_masuk.id_type', $id)
+              ->where('app_barang_masuk.status_barang', 1)
               ->get();
 
       return $query->result();

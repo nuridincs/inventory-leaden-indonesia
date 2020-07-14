@@ -19,7 +19,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <div class="dropdown-menu dropdown-menu-right">
               <!-- <div class="dropdown-title">Logged in 5 min ago</div> -->
               <div class="dropdown-divider"></div>
-              <a href="/login/logout" class="dropdown-item has-icon text-danger">
+              <a href="<?= base_url('login/logout') ?> " class="dropdown-item has-icon text-danger">
                 <i class="fas fa-sign-out-alt"></i> Logout
               </a>
             </div>

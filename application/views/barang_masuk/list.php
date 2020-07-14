@@ -63,7 +63,7 @@ $this->load->view('_partials/header');
                       }
 
                       if ($rop > $data->jumlah_barang) {
-                        $limit = '<span class="badge badge-danger">melebihi batas ROP</span>';
+                        $limit = '<span class="badge badge-danger">Batas limit ROP</span>';
                       }
                   ?>
                     <tr>
