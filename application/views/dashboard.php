@@ -13,6 +13,7 @@ $this->load->view('_partials/header');
 
     <div class="section-body">
       <h1>Selamat Datang di aplikasi inventori PT. LEADEN INDONESIA</h1>
+      <img src="<?= base_url(); ?>/assets/img/produk.jpg" class="img-fluid" height="500" width="1000">
     </div>
   </section>
 </div>
