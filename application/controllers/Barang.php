@@ -124,14 +124,15 @@
       return $result;
     }
 
-    public function cetakLaporan()
+    public function cetakLaporan($id_type = null)
     {
-      $data = $this->barang->getLaporan();
+      $data = $this->barang->getLaporan($id_type);
 
       $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
       // document informasi
       $pdf->SetCreator('Inventory Persidiaan Barang');
+
       $pdf->SetTitle('Laporan');
       $pdf->SetSubject('Laporan');
 
@@ -162,10 +163,13 @@
 
       $pdf->AddPage('L');
 
-      $html=
-        '<div>
-          <h1 align="center">Laporan Barang</h1>
-
+      $html = '<div>';
+      if ($id_type != null) {
+        $html .= '<h1 align="center">Laporan Barang dengan Tipe '.$id_type.'</h1>';
+      } else {
+        $html .= '<h1 align="center">Laporan Barang</h1>';
+      }
+      $html .='
           <table border="1" width="100" align="center">
             <tr>
               <th style="width:40px" align="center">No</th>

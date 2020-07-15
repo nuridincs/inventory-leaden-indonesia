@@ -19,12 +19,15 @@
       return $query->result();
     }
 
-    public function getLaporan()
+    public function getLaporan($id_type = null)
     {
-      $query = $this->db->select('app_barang_masuk.part_number, app_barang_masuk.id_type, app_barang_masuk.jumlah_barang, app_barang_masuk.tanggal_masuk, app_barang_keluar.tanggal_keluar, app_barang_keluar.jumlah_barang_keluar')
-              ->from('app_barang_masuk')
-              ->join('app_barang_keluar', 'app_barang_masuk.part_number=app_barang_keluar.part_number', 'left')
-              ->get();
+      $this->db->select('app_barang_masuk.part_number, app_barang_masuk.id_type, app_barang_masuk.jumlah_barang, app_barang_masuk.tanggal_masuk, app_barang_keluar.tanggal_keluar, app_barang_keluar.jumlah_barang_keluar');
+      $this->db->from('app_barang_masuk');
+      $this->db->join('app_barang_keluar', 'app_barang_masuk.part_number=app_barang_keluar.part_number', 'left');
+      if ($id_type != null) {
+        $this->db->where('app_barang_masuk.id_type', $id_type);
+      }
+      $query = $this->db->get();
 
       // echo $this->db->last_query();die;
 

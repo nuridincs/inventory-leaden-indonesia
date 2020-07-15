@@ -18,7 +18,9 @@ $this->load->view('_partials/header');
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <a href="cetakLaporan" class="btn btn-primary mb-4">Cetak Laporan</a>
+              <a href="<?= base_url() ?>barang/cetakLaporan" class="btn btn-danger mb-4">Cetak Laporan</a>
+              <a href="<?= base_url() ?>barang/cetakLaporan/100" class="btn btn-info mb-4">Cetak Tipe 100</a>
+              <a href="<?= base_url() ?>barang/cetakLaporan/200" class="btn btn-primary mb-4">Cetak Tipe 200 </a>
               <div class="table-responsive">
                 <table class="table table-striped" id="table-1">
                   <thead>
