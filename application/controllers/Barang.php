@@ -49,7 +49,8 @@
     {
       $data = array(
         'title' => "PT. FAJAR UTAMA | Barang Masuk",
-        'barang' => $this->barang->getJoinData('part_number', 'app_barang_masuk', 'app_barang_keluar')
+        // 'barang' => $this->barang->getJoinData('part_number', 'app_barang_masuk', 'app_barang_keluar')
+        'barang' => $this->barang->getDataBarangKeluar()
       );
 
       $this->load->view('barang_keluar/list', $data);
@@ -72,6 +73,7 @@
         'laporan' => $this->barang->getLaporan()
         // 'barang' => $this->barang->getJoinData('part_number', 'app_barang', 'app_barang_masuk')
       );
+      // print_r($data);die;
 
       $this->load->view('laporan', $data);
     }
@@ -174,10 +176,11 @@
             <tr>
               <th style="width:40px" align="center">No</th>
               <th style="width:150px" align="center">Part Number</th>
-              <th style="width:150px" align="center">Type</th>
+              <th style="width:150px" align="center">Part Name</th>
+              <th style="width:100px" align="center">Type</th>
               <th style="width:150px" align="center">Tanggal Masuk</th>
               <th style="width:150px" align="center">Tanggal Keluar</th>
-              <th style="width:200px" align="center">Jumlah Barang Keluar</th>
+              <th style="width:100px" align="center">Jumlah Barang Keluar</th>
               <th style="width:140px" align="center">Sisa Barang</th>
             </tr>';
 
@@ -187,6 +190,7 @@
               $html .= '<tr>
                 <td>'.$no.'</td>
                 <td>'.$item->part_number.'</td>
+                <td>'.$item->part_name.'</td>
                 <td>'.$item->id_type.'</td>
                 <td>'.date('Y-m-d', strtotime($item->tanggal_masuk)).'</td>
                 <td>'.$item->tanggal_keluar.'</td>
@@ -250,10 +254,9 @@
           <table border="1">
             <tr>
               <th style="width:40px" align="center">No</th>
-              <th style="width:200px" align="center">Part Number</th>
-              <th style="width:200px" align="center">Tanggal Masuk</th>
-              <th style="width:200px" align="center">Tanggal Keluar</th>
-              <th style="width:250" align="center">Jumlah Barang Keluar</th>
+              <th style="width:300px" align="center">Part Number</th>
+              <th style="width:300px" align="center">Part Name</th>
+              <th style="width:200" align="center">Jumlah Barang Keluar</th>
             </tr>';
         $no = 0;
         foreach($data as $item) {
@@ -261,8 +264,7 @@
           $html .= '<tr>
             <td align="center">'.$no.'</td>
             <td align="center">'.$item->part_number.'</td>
-            <td align="center">'.date('Y-m-d', strtotime($item->tanggal_masuk)).'</td>
-            <td align="center">'.$item->tanggal_keluar.'</td>
+            <td align="center">'.$item->part_name.'</td>
             <td align="center">'.$item->jumlah_barang_keluar.'</td>
           </tr>';
         }

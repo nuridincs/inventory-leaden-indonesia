@@ -22,12 +22,12 @@ $this->load->view('_partials/header');
               <form action="<?= base_url($url); ?>" method="post">
                 <div class="form-group">
                   <label>Part Name</label>
-                  <input type="text" class="form-control" value="<?= $action == 'edit' ? $dtlBarang->part_name : '' ?>"  name="part_name" disabled required>
+                  <input type="text" class="form-control" value="<?= $action == 'edit' ? $dtlBarang->part_name : '' ?>"  name="part_name" <?= $action == 'edit' ? 'disabled' : '' ?> required>
                 </div>
 
                 <div class="form-group">
                   <label>Part Number</label>
-                  <input type="text" class="form-control" value="<?= $action == 'edit' ? $dtlBarang->part_number : '' ?>" name="part_number" disabled required>
+                  <input type="text" class="form-control" value="<?= $action == 'edit' ? $dtlBarang->part_number : '' ?>" name="part_number" <?= $action == 'edit' ? 'disabled' : '' ?>  required>
                 </div>
 
                 <div class="form-group">
