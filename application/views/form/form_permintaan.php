@@ -18,7 +18,7 @@ $this->load->view('_partials/header');
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <?php $url = ($action == 'edit' ? 'barang/actionUpdate/app_barang_masuk/'.$dtlBarang->part_number : 'barang/actionAdd/app_barang_masuk') ?>
+              <?php $url = ($action == 'edit' ? 'barang/actionUpdate/app_barang_masuk/'.$dtlBarang->id : 'barang/actionAdd/app_barang_masuk') ?>
               <form action="<?= base_url($url); ?>" method="post">
                 <?php if (isset($dtlBarang->status_barang) && $dtlBarang->status_barang == 0): ?>
                   <input type="hidden" class="form-control invoice-input" value="<?= $action == 'edit' ? $dtlBarang->status_barang : '' ?>" name="status_barang">

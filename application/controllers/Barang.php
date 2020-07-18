@@ -19,7 +19,7 @@
     public function index()
     {
       $data = array(
-        'title' => "PT. FAJAR UTAMA | Dashboard",
+        'title' => "PT. LEADEN INDONESIA | Dashboard",
       );
 
       $this->load->view('dashboard', $data);
@@ -28,7 +28,7 @@
     public function listMasterBarang()
     {
       $data = array(
-        'title' => "PT. FAJAR UTAMA | Master Barang",
+        'title' => "PT. LEADEN INDONESIA | Master Barang",
         'barang' => $this->barang->getData('app_barang')
       );
 
@@ -38,7 +38,7 @@
     public function listBarangMasuk()
     {
       $data = array(
-        'title' => "PT. FAJAR UTAMA | Barang Masuk",
+        'title' => "PT. LEADEN INDONESIA | Barang Masuk",
         'barang' => $this->barang->getJoinData('part_number', 'app_barang', 'app_barang_masuk')
       );
 
@@ -48,7 +48,7 @@
     public function listBarangKeluar()
     {
       $data = array(
-        'title' => "PT. FAJAR UTAMA | Barang Masuk",
+        'title' => "PT. LEADEN INDONESIA | Barang Masuk",
         // 'barang' => $this->barang->getJoinData('part_number', 'app_barang_masuk', 'app_barang_keluar')
         'barang' => $this->barang->getDataBarangKeluar()
       );
@@ -59,7 +59,7 @@
     public function listUser()
     {
       $data = array(
-        'title' => "PT. FAJAR UTAMA | Data User",
+        'title' => "PT. LEADEN INDONESIA | Data User",
         'user' => $this->barang->getData('app_users')
       );
 
@@ -69,7 +69,7 @@
     public function laporan()
     {
       $data = array(
-        'title' => "PT. FAJAR UTAMA | Laporan",
+        'title' => "PT. LEADEN INDONESIA | Laporan",
         'laporan' => $this->barang->getLaporan()
         // 'barang' => $this->barang->getJoinData('part_number', 'app_barang', 'app_barang_masuk')
       );
@@ -87,7 +87,7 @@
       }
 
       $data = array(
-        'title' => "PT. FAJAR UTAMA | Form ". $form,
+        'title' => "PT. LEADEN INDONESIA | Form ". $form,
         'action' => $action,
         'barang' => $this->getData($form, 'app_barang'),
         'type' => $this->getData($form, 'app_type'),
@@ -106,7 +106,7 @@
       }
 
       if($form == 'form_permintaan') {
-        $result = $this->barang->getDataByID('app_barang_masuk', 'part_number', $id);
+        $result = $this->barang->getDataByID('app_barang_masuk', 'id', $id);
       }
 
       if($form == 'form_user') {
@@ -302,6 +302,8 @@
             $_view .= '<div class="col">';
               $_view .= '<input type="text" class="form-control invoice-input w-50" name="jumlah_barang[]" id="jumlah_barang'.$value->part_number.'" placeholder="Masukan Jumlah" require onkeyup="checkSS('.$value->part_number.')" />';
               $_view .= '<input type="hidden" class="form-control invoice-input w-50" name="part_number[]" value="'.$value->part_number.'" />';
+              $_view .= '<input type="hidden" class="form-control invoice-input w-50" name="id_barang_masuk[]" value="'.$value->id_barang_masuk.'" />';
+              $_view .= '<input type="hidden" class="form-control invoice-input w-50" name="id_type_barang[]" value="'.$value->id_type_barang.'" />';
               $_view .= '<small class="badge badge-danger mt-2" style="display:none" id="error'.$value->part_number.'">Jumlah Melebihi Safety Stok</small>';
             $_view .= '</div>';
           $_view .= '</div>';
@@ -353,7 +355,7 @@
       }
 
       if ($table == 'app_barang_masuk') {
-        $idName = 'part_number';
+        $idName = 'id';
         $redirect = '/listBarangMasuk';
       }
 
@@ -409,20 +411,25 @@
         $tmpArrayData[] = [
           'part_number' => $request['part_number'][$i],
           'jumlah_barang' => $request['jumlah_barang'][$i],
+          'id_barang_masuk' => $request['id_barang_masuk'][$i],
+          'id_type_barang' => $request['id_type_barang'][$i],
         ];
       }
 
       for ($ii=0; $ii < count($tmpArrayData) ; $ii++) {
         if ($tmpArrayData[$ii]['jumlah_barang'] != "" || $tmpArrayData[$ii]['jumlah_barang'] != null) {
           $table = 'app_barang_masuk';
-          $request = array('jumlah_barang' => $tmpArrayData[$ii]['jumlah_barang']);
-          $idName = 'part_number';
-          $id = $tmpArrayData[$ii]['part_number'];
+          $idName = 'id';
+          $id = $tmpArrayData[$ii]['id_barang_masuk'];
+          $getBarangMasuk = $this->barang->getDataByID('app_barang_masuk', 'id', $id);
+          $updateJumlahBarang = $getBarangMasuk->jumlah_barang - $tmpArrayData[$ii]['jumlah_barang'];
+          $request = array('jumlah_barang' => $updateJumlahBarang);
 
           $formBarangKeluar = [
             'part_number' => $tmpArrayData[$ii]['part_number'],
             'jumlah_barang_keluar' => $tmpArrayData[$ii]['jumlah_barang'],
             'tanggal_keluar' => date('Y-m-d'),
+            'id_type' => $tmpArrayData[$ii]['id_type_barang'],
           ];
 
           $this->barang->updateData($table, $request, $idName, $id);

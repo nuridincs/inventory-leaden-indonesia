@@ -51,7 +51,7 @@ $this->load->view('_partials/header');
                       <td class="align-middle">
                         <?= $data->id_type ?>
                       </td>
-                      <td><?= $data->jumlah_barang ?></td>
+                      <td><?= $data->jumlah_barang_keluar ?></td>
                       <td><?= date('Y-m-d', strtotime($data->tanggal_masuk)) ?></td>
                       <td><?= $data->tanggal_keluar ?></td>
                       <td>

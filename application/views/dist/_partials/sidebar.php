@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <div class="main-sidebar sidebar-style-2">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
-            <a href="<?php echo base_url(); ?>dist/index">PT. FAJAR UTAMA</a>
+            <a href="<?php echo base_url(); ?>">PT. LEADEN INDONESIA</a>
           </div>
           <div class="sidebar-brand sidebar-brand-sm">
             <a href="<?php echo base_url(); ?>dist/index">Fu</a>

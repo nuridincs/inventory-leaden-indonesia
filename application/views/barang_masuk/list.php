@@ -91,14 +91,14 @@ $this->load->view('_partials/header');
                         <?php } ?>
 
                         <?php if($data->status_barang != 0) { ?>
-                          <a href="form/form_permintaan/edit/<?= $data->part_number ?>" class="btn btn-icon btn-primary" data-toggle="tooltip" data-placement="top" title data-original-title="Edit Barang"><i class="far fa-edit"></i></a>
+                          <a href="form/form_permintaan/edit/<?= $data->id ?>" class="btn btn-icon btn-primary" data-toggle="tooltip" data-placement="top" title data-original-title="Edit Barang"><i class="far fa-edit"></i></a>
                         <?php } ?>
 
                         <?php if($data->status_barang == 0) { ?>
-                          <a href="form/form_permintaan/edit/<?= $data->part_number ?>" class="btn btn-icon btn-info" data-toggle="tooltip" data-placement="top" title data-original-title="Buat Permintaan"><i class="fa fa-reply-all" aria-hidden="true"></i></a>
+                          <a href="form/form_permintaan/edit/<?= $data->id ?>" class="btn btn-icon btn-info" data-toggle="tooltip" data-placement="top" title data-original-title="Buat Permintaan"><i class="fa fa-reply-all" aria-hidden="true"></i></a>
                         <?php } ?>
 
-                        <button class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="top" title data-original-title="Hapus Barang" data-confirm="Apa Anda yakin ingin menghapus data ini?" data-confirm-yes="deleteData('<?= $data->part_number ?>');"><i class="fas fa-trash"></i></button>
+                        <button class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="top" title data-original-title="Hapus Barang" data-confirm="Apa Anda yakin ingin menghapus data ini?" data-confirm-yes="deleteData('<?= $data->id ?>');"><i class="fas fa-trash"></i></button>
                       </td>
                     </tr>
                   <?php } ?>
@@ -182,7 +182,7 @@ $this->load->view('_partials/header');
   function deleteData(id) {
     const formData = {
       id: id,
-      idName: 'part_number',
+      idName: 'id',
       table: 'app_barang_masuk'
     }
 

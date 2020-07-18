@@ -24,9 +24,11 @@
     {
       $query = $this->db->select('*')
               ->from('app_barang_masuk')
-              ->join('app_barang_keluar', 'app_barang_keluar.part_number=app_barang_masuk.part_number')
+              ->join('app_barang_keluar', 'app_barang_keluar.part_number=app_barang_masuk.part_number AND app_barang_keluar.id_type=app_barang_masuk.id_type')
               ->join('app_barang', 'app_barang.part_number=app_barang_masuk.part_number')
               ->get();
+
+      // echo $this->db->last_query();die;
 
       return $query->result();
     }
@@ -61,7 +63,7 @@
 
     public function getDataByType($id)
     {
-      $query = $this->db->select('*')
+      $query = $this->db->select('*, app_barang_masuk.id AS id_barang_masuk, app_barang_masuk.id_type AS id_type_barang')
               ->from('app_barang_masuk')
               ->join('app_barang', 'app_barang.part_number=app_barang_masuk.part_number')
               ->where('app_barang_masuk.id_type', $id)
