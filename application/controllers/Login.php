@@ -25,7 +25,7 @@
         $email = $this->input->post('email',TRUE);
         $password = $this->input->post('password',TRUE);
         $cek = $this->M_login->cek_user($email, $password);
-        // print_r($cek);die;
+
         if( $cek->num_rows() != 1){
           $this->session->set_flashdata('msg','Email Dan Password Salah');
           redirect(base_url('login'));

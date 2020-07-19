@@ -26,9 +26,7 @@ $this->load->view('_partials/header');
                 <table class="table table-striped" id="table-1">
                   <thead>
                     <tr>
-                      <th class="text-center">
-                        Nomor
-                      </th>
+                      <th class="text-center">Nomor</th>
                       <th>Part Name</th>
                       <th>Part Number</th>
                       <th>Jenis Type</th>
@@ -82,12 +80,12 @@ $this->load->view('_partials/header');
                       <td><?= $data->keterangan ?></td>
                       <td><?= $status_barang ?></td>
                       <td>
-                        <?php if($data->status_barang == 2) { ?>
-                          <button class="btn btn-icon btn-warning" data-toggle="tooltip" data-placement="top" title data-original-title="Approve Barang" data-confirm="Apa Anda yakin ingin approve data ini?" data-confirm-yes="approveData(<?= $data->part_number ?>);"><i class="fas fa-check"></i></button>
+                        <?php if($data->status_barang == 2 && $this->session->userdata['role'] == 'manager') { ?>
+                          <button class="btn btn-icon btn-warning" data-toggle="tooltip" data-placement="top" title data-original-title="Approve Barang" data-confirm="Apa Anda yakin ingin approve data ini?" data-confirm-yes="approveData(<?= $data->id ?>);"><i class="fas fa-check"></i></button>
                         <?php } ?>
 
                         <?php if($data->status_barang == 3) { ?>
-                          <button class="btn btn-icon btn-success" data-toggle="modal" data-target="#modalVerifikasiBarang" onClick="getID(<?= $data->part_number ?>)"><i class="fas fa-check-circle"></i></button>
+                          <button class="btn btn-icon btn-success" data-toggle="modal" data-target="#modalVerifikasiBarang" onClick="getID(<?= $data->id ?>)"><i class="fas fa-check-circle"></i></button>
                         <?php } ?>
 
                         <?php if($data->status_barang != 0) { ?>
@@ -145,7 +143,7 @@ $this->load->view('_partials/header');
   function approveData(id) {
     const formData = {
       id: id,
-      idName: 'part_number',
+      idName: 'id',
       table: 'app_barang_masuk',
       data: {
         status_permintaan: 'sedang_diproses',
@@ -161,7 +159,7 @@ $this->load->view('_partials/header');
   $('#submitVerifikasiBarang').click(function() {
     const formData = {
       id: $('#idSelected').val(),
-      idName: 'part_number',
+      idName: 'id',
       table: 'app_barang_masuk',
       data: {
         status_barang: 1,
