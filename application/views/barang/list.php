@@ -31,7 +31,7 @@ $this->load->view('_partials/header');
                       <th>Minimum Stok</th>
                       <th>Bill Of Material</th>
                       <th>ROP</th>
-                      <!-- <th>Status</th> -->
+                      <th>Stok</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -43,6 +43,11 @@ $this->load->view('_partials/header');
                       $no++;
 
                       $rop = $leadtime * $data->kebutuhan_bahan + $data->minimum_stok;
+                      $stok = $data->stok;
+
+                      if ($data->stok == NULL) {
+                        $stok = 0;
+                      }
                   ?>
                     <tr>
                       <td>
@@ -57,9 +62,10 @@ $this->load->view('_partials/header');
                       </td>
                       <td><?= $data->bom ?></td>
                       <td><?= $rop ?></td>
+                      <td><?= $stok ?></td>
                       <td>
                         <a href="form/form_barang/edit/<?= $data->part_number ?>" class="btn btn-icon btn-primary" data-toggle="tooltip" data-placement="top" title data-original-title="Edit Barang"><i class="far fa-edit"></i></a>
-                        <button class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="top" title data-original-title="Hapus Barang" data-confirm="Apa Anda yakin ingin menghapus data ini?" data-confirm-yes="deleteData(<?= $data->part_number ?>);"><i class="fas fa-trash"></i></button>
+                        <button class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="top" title data-original-title="Hapus Barang" data-confirm="Apa Anda yakin ingin menghapus data ini?" data-confirm-yes="deleteData('<?= $data->part_number ?>');"><i class="fas fa-trash"></i></button>
                       </td>
                     </tr>
                   <?php } ?>

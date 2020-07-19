@@ -93,4 +93,18 @@
 
       return $query->row();
     }
+
+    public function getDataMasterBarang()
+    {
+      $sql = 'SELECT app_barang.*, app_barang_masuk.stok
+              FROM app_barang
+              LEFT JOIN (SELECT part_number, status_barang, SUM(app_barang_masuk.jumlah_barang) stok
+               FROM app_barang_masuk
+                  WHERE app_barang_masuk.status_barang = 1
+                  GROUP BY app_barang_masuk.part_number
+                ) app_barang_masuk ON app_barang_masuk.part_number = app_barang.part_number';
+
+      $query = $this->db->query($sql);
+      return $query->result();
+    }
   }

@@ -29,7 +29,7 @@
     {
       $data = array(
         'title' => "PT. LEADEN INDONESIA | Master Barang",
-        'barang' => $this->barang->getData('app_barang')
+        'barang' => $this->barang->getDataMasterBarang()
       );
 
       $this->load->view('barang/list', $data);
