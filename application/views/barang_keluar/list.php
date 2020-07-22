@@ -60,7 +60,7 @@ $this->load->view('_partials/header');
                       <td><?= date('Y-m-d', strtotime($data->tanggal_masuk)) ?></td>
                       <td><?= $data->tanggal_keluar ?></td>
                       <td>
-                        <a href="cetakInvoice/<?= $data->part_number ?>" class="btn btn-icon btn-primary" data-toggle="tooltip" data-placement="top" title data-original-title="Cetak Invoice"><i class="fas fa-print"></i></a>
+                        <a href="cetakInvoice/<?= $data->id ?>" class="btn btn-icon btn-primary" data-toggle="tooltip" data-placement="top" title data-original-title="Cetak Invoice"><i class="fas fa-print"></i></a>
                       </td>
                     </tr>
                   <?php } ?>

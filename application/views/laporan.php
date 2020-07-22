@@ -28,10 +28,10 @@ $this->load->view('_partials/header');
                       <th class="text-center">Nomor</th>
                       <th>Part Number</th>
                       <th>Part Name</th>
-                      <th>Jumlah Barang</th>
+                      <th>Jumlah Barang Keluar</th>
                       <th>Tanggal Masuk</th>
                       <th>Tanggal Keluar</th>
-                      <th>Jumlah Barang Keluar</th>
+                      <th>Sisa Barang</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -47,11 +47,11 @@ $this->load->view('_partials/header');
                       <td><?= $data->part_number ?></td>
                       <td><?= $data->part_name ?></td>
                       <td class="align-middle">
-                        <?= $data->jumlah_barang ?>
+                        <?= $data->jumlah_barang_keluar ?>
                       </td>
                       <td><?= $data->tanggal_masuk ?></td>
                       <td><?= $data->tanggal_keluar ?></td>
-                      <td><?= $data->jumlah_barang_keluar ?></td>
+                      <td><?= $data->sisa_barang ?></td>
                     </tr>
                   <?php } ?>
                   </tbody>

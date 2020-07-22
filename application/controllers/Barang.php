@@ -195,7 +195,7 @@
                 <td>'.date('Y-m-d', strtotime($item->tanggal_masuk)).'</td>
                 <td>'.$item->tanggal_keluar.'</td>
                 <td>'.$item->jumlah_barang_keluar.'</td>
-                <td>'.$item->jumlah_barang.'</td>
+                <td>'.$item->sisa_barang.'</td>
               </tr>';
           }
 
@@ -430,6 +430,7 @@
             'jumlah_barang_keluar' => $tmpArrayData[$ii]['jumlah_barang'],
             'tanggal_keluar' => date('Y-m-d'),
             'id_type' => $tmpArrayData[$ii]['id_type_barang'],
+            'sisa_barang' => $updateJumlahBarang,
           ];
 
           $this->barang->updateData($table, $request, $idName, $id);
