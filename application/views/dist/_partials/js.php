@@ -9,7 +9,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <script src="<?php echo base_url(); ?>assets/modules/nicescroll/jquery.nicescroll.min.js"></script>
   <script src="<?php echo base_url(); ?>assets/modules/moment.min.js"></script>
   <script src="<?php echo base_url(); ?>assets/js/stisla.js"></script>
-  
+  <script src="<?php echo base_url(); ?>assets/modules/jquery-pwstrength/jquery.pwstrength.min.js"></script>
+  <script src="<?php echo base_url(); ?>assets/modules/bootstrap-daterangepicker/daterangepicker.js"></script>
+  <script src="<?php echo base_url(); ?>assets/modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
+  <script src="<?php echo base_url(); ?>assets/modules/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+  <script src="<?php echo base_url(); ?>assets/modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
+  <script src="<?php echo base_url(); ?>assets/modules/select2/dist/js/select2.full.min.js"></script>
+  <script src="<?php echo base_url(); ?>assets/modules/jquery-selectric/jquery.selectric.min.js"></script>
+
+  <script src="<?php echo base_url(); ?>assets/js/page/forms-advanced-forms.js"></script>
+
+
   <!-- JS Libraies -->
 <?php
 if ($this->uri->segment(2) == "" || $this->uri->segment(2) == "index") { ?>
@@ -164,7 +174,7 @@ if ($this->uri->segment(2) == "" || $this->uri->segment(2) == "index") { ?>
   <script src="<?php echo base_url(); ?>assets/js/page/components-user.js"></script>
 <?php
 }elseif ($this->uri->segment(2) == "forms_advanced_form") { ?>
-  <script src="<?php echo base_url(); ?>assets/js/page/forms-advanced-forms.js"></script>
+  <script src="<?php echo base_url(); ?>assets/js/page/forms-advanced-custom.js"></script>
 <?php
 }elseif ($this->uri->segment(2) == "gmaps_advanced_route") { ?>
   <script src="<?php echo base_url(); ?>assets/js/page/gmaps-advanced-route.js"></script>

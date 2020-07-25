@@ -59,12 +59,13 @@ $("#jenis_type").change(function() {
   });
 });
 
-function checkSS(part_number) {
-  const jumlah_barang = document.getElementById("jumlah_barang"+part_number).value;
+function checkSS(part_number, id) {
+  const jumlah_barang = document.getElementById("jumlah_barang"+id).value;
 
   const formData = {
     idName: 'part_number',
-    id: part_number,
+    part_number: part_number,
+    id: id,
     table: 'app_barang',
     jumlah_barang: jumlah_barang
   }
@@ -75,12 +76,12 @@ function checkSS(part_number) {
 
       if (response.status === 'failed') {
         $('#submitBarangKeluar').prop('disabled', true);
-        $('#error'+part_number).attr('style', 'display:inline-block;');
+        $('#error'+id).attr('style', 'display:inline-block;');
       } else {
         $('#submitBarangKeluar').prop('disabled', false);
-        $('#error'+part_number).attr('style', 'display:none;');
+        $('#error'+id).attr('style', 'display:none;');
       }
     });
-  }, 1000);
+  }, 200);
 }
 </script>

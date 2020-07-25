@@ -32,8 +32,8 @@ $this->load->view('_partials/header');
                       <th class="text-center">
                         Nomor
                       </th>
-                      <th>Part Number</th>
                       <th>Part Name</th>
+                      <th>Part Number</th>
                       <th>Jenis Type</th>
                       <th>Jumlah Barang</th>
                       <th>Tanggal Masuk</th>
@@ -42,6 +42,7 @@ $this->load->view('_partials/header');
                     </tr>
                   </thead>
                   <tbody>
+                  <?php if ($row > 1){ ?>
                   <?php
                     $no = 0;
                     foreach($barang as $data) {
@@ -51,8 +52,8 @@ $this->load->view('_partials/header');
                       <td>
                         <?= $no; ?>
                       </td>
-                      <td><?= $data->part_number ?></td>
                       <td><?= $data->part_name ?></td>
+                      <td><?= $data->part_number ?></td>
                       <td class="align-middle">
                         <?= $data->id_type ?>
                       </td>
@@ -63,7 +64,16 @@ $this->load->view('_partials/header');
                         <a href="cetakInvoice/<?= $data->part_number ?>" class="btn btn-icon btn-primary" data-toggle="tooltip" data-placement="top" title data-original-title="Cetak Invoice"><i class="fas fa-print"></i></a>
                       </td>
                     </tr>
-                  <?php } ?>
+                  <?php
+                      }
+                    } else {
+                  ?>
+                  <tr>
+                    <td colspan="9" align="center">Data tidak ditemukan</td>
+                  </tr>
+                  <?php
+                    }
+                  ?>
                   </tbody>
                 </table>
               </div>

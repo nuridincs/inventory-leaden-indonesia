@@ -50,7 +50,8 @@
       $data = array(
         'title' => "PT. LEADEN INDONESIA | Barang Masuk",
         // 'barang' => $this->barang->getJoinData('part_number', 'app_barang_masuk', 'app_barang_keluar')
-        'barang' => $this->barang->getDataBarangKeluar()
+        'barang' => $this->barang->getDataBarangKeluar(),
+        'row' => count($this->barang->getDataBarangKeluar()),
       );
 
       $this->load->view('barang_keluar/list', $data);
@@ -73,7 +74,8 @@
         'laporan' => $this->barang->getLaporan()
         // 'barang' => $this->barang->getJoinData('part_number', 'app_barang', 'app_barang_masuk')
       );
-      // print_r($data);die;
+      // echo "<pre>";
+      // print_r($data['laporan']);die;
 
       $this->load->view('laporan', $data);
     }
@@ -128,7 +130,13 @@
 
     public function cetakLaporan($id_type = null)
     {
-      $data = $this->barang->getLaporan($id_type);
+      $request = $this->input->post();
+      $explodeDate = explode(' - ', $request['dateRange']);
+      $startDate = $explodeDate[0];
+      $endDate = $explodeDate[1];
+
+      $data = $this->barang->getLaporan($id_type, $startDate, $endDate);
+      // print_r($data);die;
 
       $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
@@ -175,29 +183,37 @@
           <table border="1" width="100" align="center">
             <tr>
               <th style="width:40px" align="center">No</th>
-              <th style="width:150px" align="center">Part Number</th>
-              <th style="width:150px" align="center">Part Name</th>
+              <th style="width:100px" align="center">Part Name</th>
+              <th style="width:100px" align="center">Part Number</th>
               <th style="width:100px" align="center">Type</th>
               <th style="width:150px" align="center">Tanggal Masuk</th>
               <th style="width:150px" align="center">Tanggal Keluar</th>
+              <th style="width:100px" align="center">Jumlah Barang Masuk</th>
               <th style="width:100px" align="center">Jumlah Barang Keluar</th>
               <th style="width:140px" align="center">Sisa Barang</th>
             </tr>';
 
             $no = 0;
-            foreach($data as $item) {
-              $no++;
-              $html .= '<tr>
-                <td>'.$no.'</td>
-                <td>'.$item->part_number.'</td>
-                <td>'.$item->part_name.'</td>
-                <td>'.$item->id_type.'</td>
-                <td>'.date('Y-m-d', strtotime($item->tanggal_masuk)).'</td>
-                <td>'.$item->tanggal_keluar.'</td>
-                <td>'.$item->jumlah_barang_keluar.'</td>
-                <td>'.$item->jumlah_barang.'</td>
-              </tr>';
-          }
+            if (count($data) > 1) {
+              foreach($data as $item) {
+                $no++;
+                $jumlah_barang_masuk = $item->sisa_barang + $item->jumlah_barang_keluar;
+
+                $html .= '<tr>
+                  <td>'.$no.'</td>
+                  <td>'.$item->part_name.'</td>
+                  <td>'.$item->part_number.'</td>
+                  <td>'.$item->id_type.'</td>
+                  <td>'.date('d-m-Y', strtotime($item->tanggal_masuk)).'</td>
+                  <td>'.date('d-m-Y', strtotime($item->tanggal_keluar)).'</td>
+                  <td>'.$jumlah_barang_masuk.'</td>
+                  <td>'.$item->jumlah_barang_keluar.'</td>
+                  <td>'.$item->sisa_barang.'</td>
+                </tr>';
+              }
+            } else {
+              $html .= '<tr><td colspan="8">Data Tidak ditemukan</td></tr>';
+            }
 
           $html .='
               </table>
@@ -254,8 +270,8 @@
           <table border="1">
             <tr>
               <th style="width:40px" align="center">No</th>
-              <th style="width:300px" align="center">Part Number</th>
               <th style="width:300px" align="center">Part Name</th>
+              <th style="width:300px" align="center">Part Number</th>
               <th style="width:200" align="center">Jumlah Barang Keluar</th>
             </tr>';
         $no = 0;
@@ -263,8 +279,8 @@
           $no++;
           $html .= '<tr>
             <td align="center">'.$no.'</td>
-            <td align="center">'.$item->part_number.'</td>
             <td align="center">'.$item->part_name.'</td>
+            <td align="center">'.$item->part_number.'</td>
             <td align="center">'.$item->jumlah_barang_keluar.'</td>
           </tr>';
         }
@@ -290,21 +306,23 @@
 
       if (count($data) > 0) {
         $_view .= '<div class="row mb-4">';
-          $_view .= '<div class="col"><strong>Part Number</strong><br></div>';
+        $_view .= '<div class="col"><strong>Part Name</strong><br></div>';
+        $_view .= '<div class="col"><strong>Part Number</strong><br></div>';
           $_view .= '<div class="col"><strong>BOM</strong><br></div>';
-          $_view .= '<div class="col"><strong>Jumlah Barang</strong><br></div>';
+          $_view .= '<div class="col-4"><strong>Jumlah Barang</strong><br></div>';
         $_view .= '</div>';
 
         foreach($data as $value) {
           $_view .= '<div class="row mb-4">';
+            $_view .= '<div class="col">'.$value->part_name.'</div>';
             $_view .= '<div class="col">'.$value->part_number.'</div>';
             $_view .= '<div class="col">'.$value->bom.' Unit</div>';
-            $_view .= '<div class="col">';
-              $_view .= '<input type="text" class="form-control invoice-input w-50" name="jumlah_barang[]" id="jumlah_barang'.$value->part_number.'" placeholder="Masukan Jumlah" require onkeyup="checkSS('.$value->part_number.')" />';
+            $_view .= '<div class="col-4">';
+              $_view .= '<input type="text" class="form-control invoice-input w-50" name="jumlah_barang[]" id="jumlah_barang'.$value->id.'" placeholder="Masukan Jumlah" require onkeyup="checkSS('.$value->part_number.','.$value->id.')" />';
               $_view .= '<input type="hidden" class="form-control invoice-input w-50" name="part_number[]" value="'.$value->part_number.'" />';
               $_view .= '<input type="hidden" class="form-control invoice-input w-50" name="id_barang_masuk[]" value="'.$value->id_barang_masuk.'" />';
               $_view .= '<input type="hidden" class="form-control invoice-input w-50" name="id_type_barang[]" value="'.$value->id_type_barang.'" />';
-              $_view .= '<small class="badge badge-danger mt-2" style="display:none" id="error'.$value->part_number.'">Jumlah Melebihi Safety Stok</small>';
+              $_view .= '<small class="badge badge-danger mt-2" style="display:none" id="error'.$value->id.'">Jumlah Melebihi Safety Stok</small>';
             $_view .= '</div>';
           $_view .= '</div>';
           $index++;
@@ -430,6 +448,7 @@
             'jumlah_barang_keluar' => $tmpArrayData[$ii]['jumlah_barang'],
             'tanggal_keluar' => date('Y-m-d'),
             'id_type' => $tmpArrayData[$ii]['id_type_barang'],
+            'sisa_barang' => $updateJumlahBarang,
           ];
 
           $this->barang->updateData($table, $request, $idName, $id);
@@ -476,12 +495,13 @@
     public function checkSafetyStock()
     {
       $id = $this->input->post('id');
+      $part_number = $this->input->post('part_number');
       $idName = $this->input->post('idName');
       $table = $this->input->post('table');
       $jumlah_barang = $this->input->post('jumlah_barang');
 
-      $getSS = $this->barang->getDataByID($table, $idName, $id);
-      $getStok = $this->barang->getDataByID('app_barang_masuk', $idName, $id);
+      $getSS = $this->barang->getDataByID($table, $idName, $part_number);
+      $getStok = $this->barang->getDataByID('app_barang_masuk', 'id', $id);
       $calculateStok = $getStok->jumlah_barang - $getSS->minimum_stok;
 
       $data = [
