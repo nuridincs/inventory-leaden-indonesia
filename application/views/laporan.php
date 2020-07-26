@@ -83,23 +83,17 @@ $this->load->view('_partials/header');
 <?php $this->load->view('_partials/footer'); ?>
 
 <script>
-  // $( ".cetakLaporan" ).click(function() {
-  //   changeActionAndSubmit('/barang/cetakLaporan');
-  //   // $.get('<?//= base_url('barang/cetakLaporan'); ?>', [], function( data ) {
-  //   //   // window.location.reload();
-  //   // });
-  // });
-
   function changeActionAndSubmit(action) {
     document.getElementById('formData').action = action;
     document.getElementById('formData').submit();
   }
 
   function generateReport(type = null) {
+    const baseUrl = '<?= base_url() ?>';
     if (type) {
-      changeActionAndSubmit('/barang/cetakLaporan/'+type);
+      changeActionAndSubmit(baseUrl+'/barang/cetakLaporan/'+type);
     } else {
-      changeActionAndSubmit('/barang/cetakLaporan');
+      changeActionAndSubmit(baseUrl+'/barang/cetakLaporan');
     }
   }
 </script>

@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.27)
 # Database: db_inv_fajar
-# Generation Time: 2020-07-09 14:20:32 +0000
+# Generation Time: 2020-07-26 21:28:07 +0000
 # ************************************************************
 
 
@@ -41,15 +41,12 @@ LOCK TABLES `app_barang` WRITE;
 
 INSERT INTO `app_barang` (`part_name`, `part_number`, `minimum_stok`, `bom`, `kebutuhan_bahan`, `created_at`)
 VALUES
-	('bearing','4637175',29,'1',80,'2020-06-15 21:20:27'),
-	('boots','2058775',70,'1',14,'2020-06-15 21:20:27'),
-	('bracket','YA00029295',151,'1',14,'2020-07-02 21:04:29'),
+	('boots','2058775',10,'2',15,'2020-06-15 21:20:27'),
 	('clip','46515357',20,'2',16,'2020-06-20 10:44:47'),
 	('harnes','4630572',10,'3',18,'2020-06-20 22:33:27'),
-	('harness','YA00029285',123,'1',33,'2020-07-02 20:59:42'),
-	('hose','4612743',10,'4',20,'2020-06-15 21:20:27'),
-	('pocket','YA00030888',100,'5',22,'2020-06-20 12:58:39'),
-	('screw','452613',151,'1',14,'2020-07-02 21:03:46');
+	('screw','452613',50,'1',14,'2020-07-02 21:03:46'),
+	('solder','232323',30,'2',13,'2020-07-19 11:23:41'),
+	('wewewe','1122',20,'1',14,'2020-07-24 23:09:15');
 
 /*!40000 ALTER TABLE `app_barang` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -64,7 +61,9 @@ CREATE TABLE `app_barang_keluar` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `part_number` char(20) DEFAULT NULL,
   `jumlah_barang_keluar` int(11) DEFAULT NULL,
+  `sisa_barang` int(11) DEFAULT NULL,
   `tanggal_keluar` date DEFAULT NULL,
+  `id_type` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `kode barang keluar` (`part_number`),
   CONSTRAINT `ppp` FOREIGN KEY (`part_number`) REFERENCES `app_barang` (`part_number`)
@@ -73,15 +72,12 @@ CREATE TABLE `app_barang_keluar` (
 LOCK TABLES `app_barang_keluar` WRITE;
 /*!40000 ALTER TABLE `app_barang_keluar` DISABLE KEYS */;
 
-INSERT INTO `app_barang_keluar` (`id`, `part_number`, `jumlah_barang_keluar`, `tanggal_keluar`)
+INSERT INTO `app_barang_keluar` (`id`, `part_number`, `jumlah_barang_keluar`, `sisa_barang`, `tanggal_keluar`, `id_type`)
 VALUES
-	(1,'4637175',50,'2020-06-20'),
-	(2,'2058775',2,'2020-07-06'),
-	(3,'46515357',4,'2020-07-06'),
-	(4,'4630572',2,'2020-07-06'),
-	(5,'2058775',2,'2020-07-07'),
-	(6,'46515357',4,'2020-07-07'),
-	(7,'4630572',2,'2020-07-07');
+	(12,'2058775',100,900,'2020-07-25',200),
+	(13,'2058775',200,700,'2020-07-25',200),
+	(14,'452613',20,480,'2020-07-25',100),
+	(15,'1122',10,590,'2020-07-25',100);
 
 /*!40000 ALTER TABLE `app_barang_keluar` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -112,13 +108,10 @@ LOCK TABLES `app_barang_masuk` WRITE;
 
 INSERT INTO `app_barang_masuk` (`id`, `part_number`, `id_type`, `status_permintaan`, `jumlah_barang`, `status_barang`, `keterangan`, `tanggal_masuk`)
 VALUES
-	(1,'4637175',200,'tersedia',5010,1,NULL,'2020-06-20 00:00:00'),
-	(2,'2058775',200,'tersedia',4891,1,'test','2020-06-20 00:00:00'),
-	(4,'46515357',200,'tersedia',4,1,NULL,'2020-06-20 00:00:00'),
-	(5,'4630572',200,'pending',2111,2,NULL,'2020-06-20 00:00:00'),
-	(7,'4612743',100,'sedang_diproses',100,3,NULL,'2020-07-04 22:04:31'),
-	(8,'YA00030888',100,'tersedia',100,1,NULL,'2020-07-04 22:04:43'),
-	(9,'452613',100,'tersedia',100,1,NULL,'2020-07-04 22:04:59');
+	(31,'2058775',200,'tersedia',900,1,'','2020-07-19 14:07:48'),
+	(32,'2058775',200,'tersedia',700,1,'','2020-07-24 21:07:10'),
+	(34,'452613',100,'tersedia',480,1,'','2020-07-24 23:00:33'),
+	(35,'1122',100,'tersedia',590,1,'','2020-07-24 23:09:32');
 
 /*!40000 ALTER TABLE `app_barang_masuk` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -192,9 +185,9 @@ LOCK TABLES `app_users` WRITE;
 INSERT INTO `app_users` (`id`, `role`, `nama`, `email`, `password`)
 VALUES
 	(1,'admin','admin 1','admin@gmail.com','202cb962ac59075b964b07152d234b70'),
-	(2,'leader','leader 1','leader@gmail.com','202cb962ac59075b964b07152d234b70'),
 	(3,'manager','manager','manager@gmail.com','202cb962ac59075b964b07152d234b70'),
-	(5,'admin','admin test','admin.test@gmail.com','202cb962ac59075b964b07152d234b70');
+	(5,'admin','admin test','admin.test@gmail.com','202cb962ac59075b964b07152d234b70'),
+	(6,'leader','leader','leader@gmail.com','202cb962ac59075b964b07152d234b70');
 
 /*!40000 ALTER TABLE `app_users` ENABLE KEYS */;
 UNLOCK TABLES;

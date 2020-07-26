@@ -74,8 +74,6 @@
         'laporan' => $this->barang->getLaporan()
         // 'barang' => $this->barang->getJoinData('part_number', 'app_barang', 'app_barang_masuk')
       );
-      // echo "<pre>";
-      // print_r($data['laporan']);die;
 
       $this->load->view('laporan', $data);
     }
@@ -136,7 +134,6 @@
       $endDate = $explodeDate[1];
 
       $data = $this->barang->getLaporan($id_type, $startDate, $endDate);
-      // print_r($data);die;
 
       $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
