@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.27)
 # Database: db_inv_fajar
-# Generation Time: 2020-07-26 21:28:07 +0000
+# Generation Time: 2020-08-06 17:14:32 +0000
 # ************************************************************
 
 
@@ -31,6 +31,7 @@ CREATE TABLE `app_barang` (
   `minimum_stok` int(11) DEFAULT NULL,
   `bom` varchar(20) DEFAULT NULL,
   `kebutuhan_bahan` int(11) DEFAULT NULL,
+  `harga` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`part_name`),
   KEY `part_number` (`part_number`,`part_name`)
@@ -39,14 +40,16 @@ CREATE TABLE `app_barang` (
 LOCK TABLES `app_barang` WRITE;
 /*!40000 ALTER TABLE `app_barang` DISABLE KEYS */;
 
-INSERT INTO `app_barang` (`part_name`, `part_number`, `minimum_stok`, `bom`, `kebutuhan_bahan`, `created_at`)
+INSERT INTO `app_barang` (`part_name`, `part_number`, `minimum_stok`, `bom`, `kebutuhan_bahan`, `harga`, `created_at`)
 VALUES
-	('boots','2058775',10,'2',15,'2020-06-15 21:20:27'),
-	('clip','46515357',20,'2',16,'2020-06-20 10:44:47'),
-	('harnes','4630572',10,'3',18,'2020-06-20 22:33:27'),
-	('screw','452613',50,'1',14,'2020-07-02 21:03:46'),
-	('solder','232323',30,'2',13,'2020-07-19 11:23:41'),
-	('wewewe','1122',20,'1',14,'2020-07-24 23:09:15');
+	('11001100','test',100,'1',10,2100000,'2020-08-06 23:56:51'),
+	('boots','2058775',10,'2',15,100000,'2020-06-15 21:20:27'),
+	('clip','46515357',20,'2',16,0,'2020-06-20 10:44:47'),
+	('harnes','4630572',10,'3',18,0,'2020-06-20 22:33:27'),
+	('screw','452613',50,'1',14,0,'2020-07-02 21:03:46'),
+	('solder','232323',30,'2',13,0,'2020-07-19 11:23:41'),
+	('TEST43IDIN','111111',12,'2',34,0,'2020-07-27 10:26:21'),
+	('wewewe','1122',20,'1',14,0,'2020-07-24 23:09:15');
 
 /*!40000 ALTER TABLE `app_barang` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -77,7 +80,8 @@ VALUES
 	(12,'2058775',100,900,'2020-07-25',200),
 	(13,'2058775',200,700,'2020-07-25',200),
 	(14,'452613',20,480,'2020-07-25',100),
-	(15,'1122',10,590,'2020-07-25',100);
+	(15,'1122',10,590,'2020-07-25',100),
+	(16,'452613',300,180,'2020-07-27',100);
 
 /*!40000 ALTER TABLE `app_barang_keluar` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -110,7 +114,7 @@ INSERT INTO `app_barang_masuk` (`id`, `part_number`, `id_type`, `status_perminta
 VALUES
 	(31,'2058775',200,'tersedia',900,1,'','2020-07-19 14:07:48'),
 	(32,'2058775',200,'tersedia',700,1,'','2020-07-24 21:07:10'),
-	(34,'452613',100,'tersedia',480,1,'','2020-07-24 23:00:33'),
+	(34,'452613',100,'tersedia',180,1,'','2020-07-24 23:00:33'),
 	(35,'1122',100,'tersedia',590,1,'','2020-07-24 23:09:32');
 
 /*!40000 ALTER TABLE `app_barang_masuk` ENABLE KEYS */;
