@@ -45,6 +45,8 @@ $this->load->view('_partials/header');
                       <th>Tanggal Masuk</th>
                       <th>Tanggal Keluar</th>
                       <th>Sisa Barang</th>
+                      <th>Harga Satuan</th>
+                      <th>Total Harga</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -53,6 +55,7 @@ $this->load->view('_partials/header');
                     foreach($laporan as $data) {
                       $no++;
                       $jumlah_barang_masuk = $data->sisa_barang + $data->jumlah_barang_keluar;
+                      $totalPrice = $data->harga * $data->jumlah_barang;
                       if ($jumlah_barang_masuk > 0) {
                   ?>
                     <tr>
@@ -66,6 +69,8 @@ $this->load->view('_partials/header');
                       <td><?= date('d-m-Y', strtotime($data->tanggal_masuk)) ?></td>
                       <td><?= $data->tanggal_keluar ? date('d-m-Y', strtotime($data->tanggal_keluar)) : ''  ?></td>
                       <td><?= $data->sisa_barang ?></td>
+                      <td>Rp. <?= number_format($data->harga) ?></td>
+                      <td>Rp. <?= number_format($totalPrice) ?></td>
                     </tr>
                   <?php
                     }

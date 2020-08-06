@@ -30,8 +30,10 @@ $this->load->view('_partials/header');
                       <th>Part Number</th>
                       <th>Minimum Stok</th>
                       <th>Bill Of Material</th>
+                      <th>Kebutuhan bahan (d)</th>
                       <th>ROP</th>
                       <th>Stok</th>
+                      <th>Harga Satuan</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -61,8 +63,12 @@ $this->load->view('_partials/header');
                         <?= $data->minimum_stok ?>
                       </td>
                       <td><?= $data->bom ?></td>
+                      <td>
+                        <?= $data->kebutuhan_bahan ?>
+                      </td>
                       <td><?= $rop ?></td>
                       <td><?= $stok ?></td>
+                      <td>Rp. <?= number_format($data->harga) ?></td>
                       <td>
                         <a href="form/form_barang/edit/<?= $data->part_number ?>" class="btn btn-icon btn-primary" data-toggle="tooltip" data-placement="top" title data-original-title="Edit Barang"><i class="far fa-edit"></i></a>
                         <button class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="top" title data-original-title="Hapus Barang" data-confirm="Apa Anda yakin ingin menghapus data ini?" data-confirm-yes="deleteData('<?= $data->part_number ?>');"><i class="fas fa-trash"></i></button>

@@ -183,18 +183,21 @@
               <th style="width:100px" align="center">Part Name</th>
               <th style="width:100px" align="center">Part Number</th>
               <th style="width:100px" align="center">Type</th>
-              <th style="width:150px" align="center">Tanggal Masuk</th>
-              <th style="width:150px" align="center">Tanggal Keluar</th>
+              <th style="width:100px" align="center">Tanggal Masuk</th>
+              <th style="width:100px" align="center">Tanggal Keluar</th>
               <th style="width:100px" align="center">Jumlah Barang Masuk</th>
               <th style="width:100px" align="center">Jumlah Barang Keluar</th>
-              <th style="width:140px" align="center">Sisa Barang</th>
+              <th style="width:80px" align="center">Sisa Barang</th>
+              <th style="width:80px" align="center">Harga Satuan</th>
+              <th style="width:80px" align="center">Total Harga</th>
             </tr>';
 
             $no = 0;
-            if (count($data) > 1) {
+            if (count($data) > 0) {
               foreach($data as $item) {
                 $no++;
                 $jumlah_barang_masuk = $item->sisa_barang + $item->jumlah_barang_keluar;
+                $totalPrice = $item->harga * $item->jumlah_barang;
 
                 $html .= '<tr>
                   <td>'.$no.'</td>
@@ -206,6 +209,8 @@
                   <td>'.$jumlah_barang_masuk.'</td>
                   <td>'.$item->jumlah_barang_keluar.'</td>
                   <td>'.$item->sisa_barang.'</td>
+                  <td>'.number_format($item->harga).'</td>
+                  <td>'.number_format($totalPrice).'</td>
                 </tr>';
               }
             } else {

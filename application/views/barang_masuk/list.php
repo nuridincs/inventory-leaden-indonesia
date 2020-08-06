@@ -32,6 +32,7 @@ $this->load->view('_partials/header');
                       <th>Jenis Type</th>
                       <th>ROP</th>
                       <th>Jumlah Barang</th>
+                      <th>Total Harga</th>
                       <th>Ket.</th>
                       <th>Status Barang</th>
                       <th>Action</th>
@@ -47,6 +48,7 @@ $this->load->view('_partials/header');
                       $rop = $leadtime * $data->kebutuhan_bahan + $data->minimum_stok;
                       $status_barang = '<div class="badge badge-danger"><i class="fa fa-times" aria-hidden="true"></i> Tidak Tersedia</div>';
                       $limit = '';
+                      $totalPrice = $data->harga * $data->jumlah_barang;
 
                       if ($data->status_barang == 1) {
                         $status_barang = '<div class="badge badge-success"><i class="fa fa-check"></i> Tersedia</div>';
@@ -77,6 +79,7 @@ $this->load->view('_partials/header');
                       <td>
                         <?= $data->jumlah_barang.' '.$limit ?>
                       </td>
+                      <td>Rp. <?= number_format($totalPrice) ?></td>
                       <td><?= $data->keterangan ?></td>
                       <td><?= $status_barang ?></td>
                       <td>

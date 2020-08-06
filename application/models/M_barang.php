@@ -36,7 +36,7 @@
 
     public function getLaporan($id_type = null, $startDate = null, $endDate = null)
     {
-      $this->db->select('app_barang_masuk.part_number, app_barang_masuk.id_type, app_barang_masuk.jumlah_barang, app_barang_masuk.tanggal_masuk, app_barang_keluar.tanggal_keluar, app_barang_keluar.jumlah_barang_keluar, app_barang_keluar.sisa_barang, app_barang.part_name');
+      $this->db->select('app_barang_masuk.part_number, app_barang_masuk.id_type, app_barang_masuk.jumlah_barang, app_barang_masuk.tanggal_masuk, app_barang_keluar.tanggal_keluar, app_barang_keluar.jumlah_barang_keluar, app_barang_keluar.sisa_barang, app_barang.part_name, app_barang.harga');
       $this->db->from('app_barang_masuk');
       $this->db->join('app_barang_keluar', 'app_barang_masuk.part_number=app_barang_keluar.part_number', 'left');
       $this->db->join('app_barang', 'app_barang.part_number=app_barang_masuk.part_number');

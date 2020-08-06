@@ -45,6 +45,11 @@ $this->load->view('_partials/header');
                   <input type="text" class="form-control" value="<?= $action == 'edit' ? $dtlBarang->kebutuhan_bahan : '' ?>" name="kebutuhan_bahan" required>
                 </div>
 
+                <div class="form-group">
+                  <label>Harga</label>
+                  <input type="number" class="form-control" value="<?= $action == 'edit' ? $dtlBarang->harga : '' ?>" name="harga" required>
+                </div>
+
                 <button class="btn btn-primary btn-block">Submit</button>
               </form>
             </div>
