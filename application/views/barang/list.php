@@ -26,46 +26,26 @@ $this->load->view('_partials/header');
                       <th class="text-center">
                         Nomor
                       </th>
-                      <th>Part Name</th>
-                      <th>Part Number</th>
-                      <th>Minimum Stok</th>
-                      <th>Bill Of Material</th>
-                      <th>ROP</th>
-                      <th>Stok</th>
+                      <th>Kode Barang</th>
+                      <th>Nama Barang</th>
                       <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
                   <?php
                     $no = 0;
-                    $leadtime = 30;
                     foreach($barang as $data) {
                       $no++;
-
-                      $rop = $leadtime * $data->kebutuhan_bahan + $data->minimum_stok;
-                      $stok = $data->stok;
-
-                      if ($data->stok == NULL) {
-                        $stok = 0;
-                      }
                   ?>
                     <tr>
                       <td>
                         <?= $no; ?>
                       </td>
-                      <td><?= $data->part_name ?></td>
-                      <td class="align-middle">
-                        <?= $data->part_number ?>
-                      </td>
+                      <td><?= $data->kode_barang ?></td>
+                      <td><?= $data->nama_barang ?></td>
                       <td>
-                        <?= $data->minimum_stok ?>
-                      </td>
-                      <td><?= $data->bom ?></td>
-                      <td><?= $rop ?></td>
-                      <td><?= $stok ?></td>
-                      <td>
-                        <a href="form/form_barang/edit/<?= $data->part_number ?>" class="btn btn-icon btn-primary" data-toggle="tooltip" data-placement="top" title data-original-title="Edit Barang"><i class="far fa-edit"></i></a>
-                        <button class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="top" title data-original-title="Hapus Barang" data-confirm="Apa Anda yakin ingin menghapus data ini?" data-confirm-yes="deleteData('<?= $data->part_number ?>');"><i class="fas fa-trash"></i></button>
+                        <a href="form/form_barang/edit/<?= $data->kode_barang ?>" class="btn btn-icon btn-primary" data-toggle="tooltip" data-placement="top" title data-original-title="Edit Barang"><i class="far fa-edit"></i></a>
+                        <button class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="top" title data-original-title="Hapus Barang" data-confirm="Apa Anda yakin ingin menghapus data ini?" data-confirm-yes="deleteData('<?= $data->kode_barang ?>');"><i class="fas fa-trash"></i></button>
                       </td>
                     </tr>
                   <?php } ?>
@@ -85,7 +65,7 @@ $this->load->view('_partials/header');
   function deleteData(id) {
     const formData = {
       id: id,
-      idName: 'part_number',
+      idName: 'kode_barang',
       table: 'app_barang'
     }
 

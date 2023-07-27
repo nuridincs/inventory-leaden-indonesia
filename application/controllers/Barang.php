@@ -19,7 +19,7 @@
     public function index()
     {
       $data = array(
-        'title' => "PT. LEADEN INDONESIA | Dashboard",
+        'title' => "PT. ABC | Dashboard",
       );
 
       $this->load->view('dashboard', $data);
@@ -28,17 +28,27 @@
     public function listMasterBarang()
     {
       $data = array(
-        'title' => "PT. LEADEN INDONESIA | Master Barang",
-        'barang' => $this->barang->getDataMasterBarang()
+        'title' => "PT. ABC | Master Barang",
+        'barang' => $this->barang->getData('app_master_barang')
       );
 
       $this->load->view('barang/list', $data);
     }
 
+    public function listPlanning()
+    {
+      $data = array(
+        'title' => "PT. ABC | Barang Masuk",
+        'barang' => $this->barang->getJoinData('kode_barang', 'app_barangs', 'app_master_barang')
+      );
+
+      $this->load->view('planning_produksi/list', $data);
+    }
+
     public function listBarangMasuk()
     {
       $data = array(
-        'title' => "PT. LEADEN INDONESIA | Barang Masuk",
+        'title' => "PT. ABC | Barang Masuk",
         'barang' => $this->barang->getJoinData('part_number', 'app_barang', 'app_barang_masuk')
       );
 
@@ -48,7 +58,7 @@
     public function listBarangKeluar()
     {
       $data = array(
-        'title' => "PT. LEADEN INDONESIA | Barang Masuk",
+        'title' => "PT. ABC | Barang Masuk",
         // 'barang' => $this->barang->getJoinData('part_number', 'app_barang_masuk', 'app_barang_keluar')
         'barang' => $this->barang->getDataBarangKeluar()
       );
@@ -59,7 +69,7 @@
     public function listUser()
     {
       $data = array(
-        'title' => "PT. LEADEN INDONESIA | Data User",
+        'title' => "PT. ABC | Data User",
         'user' => $this->barang->getData('app_users')
       );
 
@@ -69,8 +79,8 @@
     public function laporan()
     {
       $data = array(
-        'title' => "PT. LEADEN INDONESIA | Laporan",
-        'laporan' => $this->barang->getLaporan()
+        'title' => "PT. ABC | Laporan",
+        'laporan' => $this->barang->getLaporanProduksi()
         // 'barang' => $this->barang->getJoinData('part_number', 'app_barang', 'app_barang_masuk')
       );
       // print_r($data);die;
@@ -87,9 +97,9 @@
       }
 
       $data = array(
-        'title' => "PT. LEADEN INDONESIA | Form ". $form,
+        'title' => "PT. ABC | Form ". $form,
         'action' => $action,
-        'barang' => $this->getData($form, 'app_barang'),
+        'barang' => $this->getData($form, 'app_master_barang'),
         'type' => $this->getData($form, 'app_type'),
         'role' => $this->barang->getData('app_role'),
         'dtlBarang' => $dtlBarang
@@ -119,7 +129,7 @@
     public function getData($form, $table)
     {
       $result = [];
-      if($form == 'form_permintaan' || $form == 'form_siapkan_barang') {
+      if($form == 'form_planning' || $form == 'form_siapkan_barang') {
         $result = $this->barang->getData($table);
       }
 
@@ -128,12 +138,12 @@
 
     public function cetakLaporan($id_type = null)
     {
-      $data = $this->barang->getLaporan($id_type);
+      $data = $this->barang->getLaporanProduksi($id_type);
 
       $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
       // document informasi
-      $pdf->SetCreator('Inventory Persidiaan Barang');
+      $pdf->SetCreator('Monitoring Produksi');
 
       $pdf->SetTitle('Laporan');
       $pdf->SetSubject('Laporan');
@@ -169,19 +179,20 @@
       if ($id_type != null) {
         $html .= '<h1 align="center">Laporan Barang dengan Tipe '.$id_type.'</h1>';
       } else {
-        $html .= '<h1 align="center">Laporan Barang</h1>';
+        $html .= '<h1 align="center">Laporan Produksi</h1>';
       }
       $html .='
           <table border="1" width="100" align="center">
             <tr>
               <th style="width:40px" align="center">No</th>
-              <th style="width:150px" align="center">Part Number</th>
-              <th style="width:150px" align="center">Part Name</th>
-              <th style="width:100px" align="center">Type</th>
-              <th style="width:150px" align="center">Tanggal Masuk</th>
-              <th style="width:150px" align="center">Tanggal Keluar</th>
-              <th style="width:100px" align="center">Jumlah Barang Keluar</th>
-              <th style="width:140px" align="center">Sisa Barang</th>
+              <th style="width:150px" align="center">Kode Barang</th>
+              <th style="width:150px" align="center">Nama Barang</th>
+              <th style="width:100px" align="center">Customer</th>
+              <th style="width:70px" align="center">Qty</th>
+              <th style="width:100px" align="center">Tanggal Planning</th>
+              <th style="width:100px" align="center">Tanggal Masuk</th>
+              <th style="width:100px" align="center">Tanggal Keluar</th>
+              <th style="width:100px" align="center">Status</th>
             </tr>';
 
             $no = 0;
@@ -189,13 +200,14 @@
               $no++;
               $html .= '<tr>
                 <td>'.$no.'</td>
-                <td>'.$item->part_number.'</td>
-                <td>'.$item->part_name.'</td>
-                <td>'.$item->id_type.'</td>
-                <td>'.date('Y-m-d', strtotime($item->tanggal_masuk)).'</td>
-                <td>'.$item->tanggal_keluar.'</td>
-                <td>'.$item->jumlah_barang_keluar.'</td>
-                <td>'.$item->sisa_barang.'</td>
+                <td>'.$item->kode_barang.'</td>
+                <td>'.$item->nama_barang.'</td>
+                <td>'.$item->customer.'</td>
+                <td>'.$item->qty.'</td>
+                <td>'.date('Y-m-d', strtotime($item->tgl_planning)).'</td>
+                <td>'.$item->tgl_masuk.'</td>
+                <td>'.$item->tgl_keluar.'</td>
+                <td>'.$item->status.'</td>
               </tr>';
           }
 

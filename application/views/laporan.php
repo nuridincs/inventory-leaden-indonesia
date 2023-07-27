@@ -19,19 +19,21 @@ $this->load->view('_partials/header');
           <div class="card">
             <div class="card-body">
               <a href="<?= base_url() ?>barang/cetakLaporan" class="btn btn-danger mb-4">Cetak Laporan</a>
-              <a href="<?= base_url() ?>barang/cetakLaporan/100" class="btn btn-info mb-4">Cetak Tipe 100</a>
-              <a href="<?= base_url() ?>barang/cetakLaporan/200" class="btn btn-primary mb-4">Cetak Tipe 200 </a>
+              <!-- <a href="<?// = base_url() ?>barang/cetakLaporan/100" class="btn btn-info mb-4">Cetak Tipe 100</a>
+              <a href="<?//= base_url() ?>barang/cetakLaporan/200" class="btn btn-primary mb-4">Cetak Tipe 200 </a> -->
               <div class="table-responsive">
                 <table class="table table-striped" id="table-1">
                   <thead>
                     <tr>
                       <th class="text-center">Nomor</th>
-                      <th>Part Number</th>
-                      <th>Part Name</th>
-                      <th>Jumlah Barang Keluar</th>
+                      <th>Kode Barang</th>
+                      <th>Nama Barang</th>
+                      <th>Customer</th>
+                      <th>Qty</th>
+                      <th>Tanggal Planning</th>
                       <th>Tanggal Masuk</th>
                       <th>Tanggal Keluar</th>
-                      <th>Sisa Barang</th>
+                      <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -41,17 +43,15 @@ $this->load->view('_partials/header');
                       $no++;
                   ?>
                     <tr>
-                      <td>
-                        <?= $no; ?>
-                      </td>
-                      <td><?= $data->part_number ?></td>
-                      <td><?= $data->part_name ?></td>
-                      <td class="align-middle">
-                        <?= $data->jumlah_barang_keluar ?>
-                      </td>
-                      <td><?= $data->tanggal_masuk ?></td>
-                      <td><?= $data->tanggal_keluar ?></td>
-                      <td><?= $data->sisa_barang ?></td>
+                      <td><?= $no; ?></td>
+                      <td><?= $data->kode_barang ?></td>
+                      <td><?= $data->nama_barang ?></td>
+                      <td><?= $data->customer ?></td>
+                      <td><?= $data->qty ?></td>
+                      <td><?= $data->tgl_planning ?></td>
+                      <td><?= date("Y-m-d", strtotime($data->tgl_masuk)) ?></td>
+                      <td><?= $data->tgl_keluar ?></td>
+                      <td><?= $data->status ?></td>
                     </tr>
                   <?php } ?>
                   </tbody>

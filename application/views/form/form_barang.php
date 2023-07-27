@@ -18,31 +18,16 @@ $this->load->view('_partials/header');
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <?php $url = ($action == 'edit' ? 'barang/actionUpdate/app_barang/'.$dtlBarang->part_number : 'barang/actionAdd/app_barang') ?>
-              <form action="<?= base_url($url); ?>" method="post">
+              <?php $url = ($action == 'edit' ? 'barang/actionUpdate/app_barang/'.$dtlBarang->kode_barang : 'barang/actionAdd/app_barang') ?>
+              <form action="<?//= base_url($url); ?>" method="post">
                 <div class="form-group">
-                  <label>Part Name</label>
-                  <input type="text" class="form-control" value="<?= $action == 'edit' ? $dtlBarang->part_name : '' ?>"  name="part_name" <?= $action == 'edit' ? 'disabled' : '' ?> required>
+                  <label>Kode Barang</label>
+                  <input type="text" class="form-control" value="KW772" disabled value="<?= $action == 'edit' ? $dtlBarang->nama_barang : '' ?>"  name="kode_barang" <?= $action == 'edit' ? 'disabled' : '' ?> required>
                 </div>
 
                 <div class="form-group">
-                  <label>Part Number</label>
-                  <input type="text" class="form-control" value="<?= $action == 'edit' ? $dtlBarang->part_number : '' ?>" name="part_number" <?= $action == 'edit' ? 'disabled' : '' ?>  required>
-                </div>
-
-                <div class="form-group">
-                  <label>Minimum Stok</label>
-                  <input type="text" class="form-control" value="<?= $action == 'edit' ? $dtlBarang->minimum_stok : '' ?>" name="minimum_stok" required>
-                </div>
-
-                <div class="form-group">
-                  <label>Bill Of Material</label>
-                  <input type="text" class="form-control" value="<?= $action == 'edit' ? $dtlBarang->bom : '' ?>" name="bom" required>
-                </div>
-
-                <div class="form-group">
-                  <label>Kebutuhan Bahan</label>
-                  <input type="text" class="form-control" value="<?= $action == 'edit' ? $dtlBarang->kebutuhan_bahan : '' ?>" name="kebutuhan_bahan" required>
+                  <label>Nama Barang</label>
+                  <input type="text" class="form-control" value="<?= $action == 'edit' ? $dtlBarang->kode_barang : '' ?>" name="nama_barang" <?= $action == 'edit' ? 'disabled' : '' ?>  required>
                 </div>
 
                 <button class="btn btn-primary btn-block">Submit</button>

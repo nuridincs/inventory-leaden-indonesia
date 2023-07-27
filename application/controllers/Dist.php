@@ -5,14 +5,14 @@ class Dist extends CI_Controller {
 
 	public function index() {
 		$data = array(
-			'title' => "PT. LEADEN INDONESIA | Dashboard"
+			'title' => "PT. ABC | Dashboard"
 		);
 		$this->load->view('dist/index', $data);
 	}
 
 	public function index_0() {
 		$data = array(
-			'title' => "PT. LEADEN INDONESIA | Dashboard"
+			'title' => "PT. ABC | Dashboard"
 		);
 		$this->load->view('dist/index-0', $data);
 	}

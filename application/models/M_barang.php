@@ -30,6 +30,22 @@
       return $query->result();
     }
 
+    public function getLaporanProduksi($id_type = null)
+    {
+      $this->db->select('*');
+      $this->db->from('app_barangs');
+      $this->db->join('app_master_barang', 'app_master_barang.kode_barang=app_barangs.kode_barang', 'left');
+      // $this->db->join('app_barang', 'app_barang.part_number=app_barang_masuk.part_number');
+      // if ($id_type != null) {
+      //   $this->db->where('app_barang_masuk.id_type', $id_type);
+      // }
+      $query = $this->db->get();
+
+      // echo $this->db->last_query();die;
+
+      return $query->result();
+    }
+
     public function getLaporan($id_type = null)
     {
       $this->db->select('app_barang_masuk.part_number, app_barang_masuk.id_type, app_barang_masuk.jumlah_barang, app_barang_masuk.tanggal_masuk, app_barang_keluar.tanggal_keluar, app_barang_keluar.jumlah_barang_keluar, app_barang.part_name, app_barang_keluar.sisa_barang');
