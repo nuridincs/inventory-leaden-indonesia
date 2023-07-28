@@ -40,7 +40,8 @@
     {
       $data = array(
         'title' => "Sistem Informasi Monitoring Produksi | Barang Masuk",
-        'barang' => $this->barang->getJoinData('kode_barang', 'app_barangs', 'app_master_barang')
+        'barang' => $this->barang->getJoinData('kode_barang', 'app_barangs', 'app_master_barang'),
+        'role' => $this->session->userdata('role')
       );
 
       $this->load->view('planning_produksi/list', $data);
@@ -93,9 +94,15 @@
     {
       $dtlBarang = [];
 
+      $dataLastMasterBarang =$this->barang->getLastKodeBarang();
+      $nextSequence = $this->generateNextSequence($dataLastMasterBarang->kode_barang);
+      $kodeBarang = $nextSequence;
+
       if($action == 'edit') {
         $dtlBarang = $this->getDataByAction($form, $id);
+        $kodeBarang = $dtlBarang->kode_barang;
       }
+
 
       $data = array(
         'title' => "Sistem Informasi Monitoring Produksi | Form ". $form,
@@ -103,7 +110,8 @@
         'barang' => $this->getData($form, 'app_master_barang'),
         'type' => $this->getData($form, 'app_type'),
         'role' => $this->barang->getData('app_role'),
-        'dtlBarang' => $dtlBarang
+        'dtlBarang' => $dtlBarang,
+        'kode_barang' => $kodeBarang
       );
 
       $this->load->view('form/'.$form, $data);
@@ -113,8 +121,9 @@
     {
       $result = [];
       if($form == 'form_barang') {
-        $result = $this->barang->getDataByID('app_barang', 'part_number', $id);
+        $result = $this->barang->getDataByID('app_master_barang', 'kode_barang', $id);
       }
+      // print_r($result);die;
 
       if($form == 'form_permintaan') {
         $result = $this->barang->getDataByID('app_barang_masuk', 'id', $id);
@@ -333,8 +342,12 @@
 
       $request = $this->input->post();
 
-      if ($table == 'app_barang') {
+      if ($table == 'app_master_barang') {
         $redirect = '/listMasterBarang';
+      }
+
+      if ($table == 'app_barangs') {
+        $redirect = '/listPlanning';
       }
 
       if ($table == 'app_barang_masuk') {
@@ -357,13 +370,25 @@
       redirect('barang'.$redirect);
     }
 
+    public function generateNextSequence($currentSequence) {
+      // Extract numeric part from the sequence
+      $numericPart = intval(substr($currentSequence, 2));
+
+      // Increment the numeric part
+      $nextNumericPart = $numericPart + 1;
+
+      // Concatenate the prefix and the incremented numeric part
+      $nextSequence = substr($currentSequence, 0, 2) . $nextNumericPart;
+      return $nextSequence;
+    }
+
     public function actionUpdate($table, $id)
     {
-      $idName = 'part_number';
+      $idName = 'kode_barang';
       $redirect = '/';
 
-      if ($table == 'app_barang') {
-        $idName = 'part_number';
+      if ($table == 'app_master_barang') {
+        $idName = 'kode_barang';
         $redirect = '/listMasterBarang';
       }
 

@@ -18,16 +18,16 @@ $this->load->view('_partials/header');
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <?php $url = ($action == 'edit' ? 'barang/actionUpdate/app_barang/'.$dtlBarang->kode_barang : 'barang/actionAdd/app_barang') ?>
-              <form action="<?//= base_url($url); ?>" method="post">
+              <?php $url = ($action == 'edit' ? 'barang/actionUpdate/app_master_barang/'.$dtlBarang->kode_barang : 'barang/actionAdd/app_master_barang') ?>
+              <form action="<?= base_url($url); ?>" method="post">
                 <div class="form-group">
                   <label>Kode Barang</label>
-                  <input type="text" class="form-control" value="KW772" disabled value="<?= $action == 'edit' ? $dtlBarang->nama_barang : '' ?>"  name="kode_barang" <?= $action == 'edit' ? 'disabled' : '' ?> required>
+                  <input type="text" class="form-control" value="<?= $kode_barang ?>" readonly value="<?= $action == 'edit' ? $dtlBarang->kode_barang : '' ?>"  name="kode_barang" <?= $action == 'edit' ? 'disabled' : '' ?> required>
                 </div>
 
                 <div class="form-group">
                   <label>Nama Barang</label>
-                  <input type="text" class="form-control" value="<?= $action == 'edit' ? $dtlBarang->kode_barang : '' ?>" name="nama_barang" <?= $action == 'edit' ? 'disabled' : '' ?>  required>
+                  <input type="text" class="form-control" value="<?= $action == 'edit' ? $dtlBarang->nama_barang : '' ?>" name="nama_barang" required>
                 </div>
 
                 <button class="btn btn-primary btn-block">Submit</button>

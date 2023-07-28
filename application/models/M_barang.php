@@ -109,6 +109,16 @@
       $this->db->update($table, $data);
     }
 
+    public function getLastKodeBarang() {
+      $query = $this->db->select('*')
+              ->from('app_master_barang')
+              ->order_by('created_at', 'desc')
+              ->limit(1)
+              ->get();
+
+      return $query->row();
+    }
+
     public function getDataByID($table, $idName, $id)
     {
       $query = $this->db->select('*')

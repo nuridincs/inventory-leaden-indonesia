@@ -31,6 +31,7 @@ $this->load->view('_partials/header');
                       <th>Nama Barang</th>
                       <th>Customer</th>
                       <th>Qty</th>
+                      <th>Keterangan</th>
                       <th>Tanggal Planning</th>
                       <th>Tanggal Masuk</th>
                       <th>Tanggal Keluar</th>
@@ -52,15 +53,28 @@ $this->load->view('_partials/header');
                       <td><?= $data->nama_barang ?></td>
                       <td><?= $data->customer ?></td>
                       <td><?= $data->qty ?></td>
+                      <td><?= $data->keterangan ?></td>
                       <td><?= $data->tgl_planning ?></td>
                       <td><?= date('Y-m-d', strtotime($data->tgl_masuk)) ?></td>
                       <td><?= $data->tgl_keluar ?></td>
                       <td><?= $data->status ?></td>
                       <td>
-                        <button class="btn btn-icon btn-success" data-toggle="modal" data-target="#modalAddComment" onClick="getID(<?= $data->id ?>)"><i class="fa fa-comment"></i></button>
-                        <button class="btn btn-icon btn-primary" data-toggle="modal" data-target="#modalAddInspector" onClick="getID(<?= $data->id ?>)"><i class="far fa-edit"></i></button>
-                        <button class="btn btn-icon btn-info" data-toggle="tooltip" data-placement="top" title data-original-title="Update Status" data-confirm="Apa Anda yakin ingin menyelesaikan produksi ini?" data-confirm-yes="updateStatus('<?= $data->id ?>');"><i class="fas fa-check-circle"></i></button>
-                        <button class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="top" title data-original-title="Hapus Barang" data-confirm="Apa Anda yakin ingin menghapus data ini?" data-confirm-yes="deleteData('<?= $data->id ?>');"><i class="fas fa-trash"></i></button>
+                        <?php if($this->session->userdata['role'] === 'qc' && $data->status === 'proses-qc') { ?>
+                          <button class="btn btn-icon btn-primary" data-toggle="modal" data-target="#modalAddInspector" onClick="getID(<?= $data->id ?>)"><i class="far fa-edit"></i></button>
+                        <?php } ?>
+
+                        <?php
+                          $role = ['ppic', 'admin'];
+                          if (in_array($this->session->userdata['role'], $role)) {
+                        ?>
+                          <button class="btn btn-icon btn-info" data-toggle="tooltip" data-placement="top" title data-original-title="Update Status" data-confirm="Apa Anda yakin ingin menyelesaikan produksi ini?" data-confirm-yes="updateStatus('<?= $data->id ?>');"><i class="fas fa-check-circle"></i></button>
+                          <button class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="top" title data-original-title="Hapus Barang" data-confirm="Apa Anda yakin ingin menghapus data ini?" data-confirm-yes="deleteData('<?= $data->id ?>');"><i class="fas fa-trash"></i></button>
+                        <?php } ?>
+
+                        <?php if($this->session->userdata['role'] === 'qc' && $data->status === 'selesai') { ?>
+                        <?php } else { ?>
+                          <button class="btn btn-icon btn-success" data-toggle="modal" data-target="#modalAddComment" onClick="getID(<?= $data->id ?>)"><i class="fa fa-comment"></i></button>
+                        <?php } ?>
                       </td>
                     </tr>
                   <?php } ?>
@@ -93,7 +107,7 @@ $this->load->view('_partials/header');
 
           <!-- Modal footer -->
           <div class="modal-footer">
-            <button type="submit" class="btn btn-primary" id="submitVerifikasiBarang">Submit</button>
+            <button type="submit" class="btn btn-primary" id="submitAddComment">Submit</button>
             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
           </div>
         </div>
@@ -113,18 +127,18 @@ $this->load->view('_partials/header');
           <!-- Modal body -->
           <div class="modal-body">
             <div class="form-group">
-              <label for="total_item_ok">Barang OK</label>
-              <input id="total_item_ok" class="form-control" placeholder="Masukan Qty Ok"/>
+              <label for="qty_ok">Barang OK</label>
+              <input id="qty_ok" class="form-control" placeholder="Masukan Qty Ok"/>
             </div>
             <div class="form-group">
-              <label for="total_item_reject">Barang Reject</label>
-              <input id="total_item_reject" class="form-control" placeholder="Masukan Qty Reject"/>
+              <label for="qty_reject">Barang Reject</label>
+              <input id="qty_reject" class="form-control" placeholder="Masukan Qty Reject"/>
             </div>
           </div>
 
           <!-- Modal footer -->
           <div class="modal-footer">
-            <button type="submit" class="btn btn-primary" id="submitVerifikasiBarang">Submit</button>
+            <button type="submit" class="btn btn-primary" id="submitInspectorCek">Submit</button>
             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
           </div>
         </div>
@@ -155,11 +169,26 @@ $this->load->view('_partials/header');
     const formData = {
       id: $('#idSelected').val(),
       idName: 'id',
-      table: 'app_barang_masuk',
+      table: 'app_barangs',
       data: {
-        status_barang: 1,
         keterangan: $('#keterangan').val(),
-        status_permintaan: 'tersedia',
+      }
+    }
+
+    $.post('<?= base_url('barang/updateStatus'); ?>', formData, function( data ) {
+      window.location.reload();
+    });
+  });
+
+  $('#submitInspectorCek').click(function() {
+    const formData = {
+      id: $('#idSelected').val(),
+      idName: 'id',
+      table: 'app_barangs',
+      data: {
+        qty_ok: $('#qty_ok').val(),
+        qty_reject: $('#qty_reject').val(),
+        status: 'selesai'
       }
     }
 
@@ -172,11 +201,26 @@ $this->load->view('_partials/header');
     $('#idSelected').val(id);
   }
 
+  function updateStatus(id) {
+    const formData = {
+      id,
+      idName: 'id',
+      table: 'app_barangs',
+      data: {
+        status: 'proses-qc'
+      }
+    }
+
+    $.post('<?= base_url('barang/updateStatus'); ?>', formData, function( data ) {
+      window.location.reload();
+    });
+  }
+
   function deleteData(id) {
     const formData = {
       id: id,
       idName: 'id',
-      table: 'app_barang_masuk'
+      table: 'app_barangs'
     }
 
     $.post('<?= base_url('barang/actionDelete'); ?>', formData, function( data ) {

@@ -19,7 +19,7 @@ $this->load->view('_partials/header');
           <div class="card">
             <div class="card-body">
               <?php $url = ($action == 'edit' ? 'barang/actionUpdate/app_barangs/'.$dtlBarang->id : 'barang/actionAdd/app_barangs') ?>
-              <form action="<?//= base_url($url); ?>" method="post">
+              <form action="<?= base_url($url); ?>" method="post">
                 <?php if (isset($dtlBarang->status_barang) && $dtlBarang->status_barang == 0): ?>
                   <input type="hidden" class="form-control invoice-input" value="<?= $action == 'edit' ? $dtlBarang->status_barang : '' ?>" name="status_barang">
                 <?php endif; ?>
@@ -39,19 +39,21 @@ $this->load->view('_partials/header');
 
                 <div class="form-group">
                   <label>Customer</label>
-                  <input type="text" class="form-control invoice-input" value="<?= $action == 'edit' ? $dtlBarang->customer : '' ?>" name="jumlah_barang">
+                  <input type="text" class="form-control invoice-input" value="<?= $action == 'edit' ? $dtlBarang->customer : '' ?>" name="customer">
                 </div>
 
 
                 <div class="form-group">
                   <label>Qty</label>
-                  <input type="number" class="form-control invoice-input" value="<?= $action == 'edit' ? $dtlBarang->jumlah_barang : '' ?>" name="jumlah_barang">
+                  <input type="number" class="form-control invoice-input" value="<?= $action == 'edit' ? $dtlBarang->qty : '' ?>" name="qty">
                 </div>
 
                 <div class="form-group">
                   <label>Tanggal Planning</label>
-                  <input type="date" class="form-control invoice-input" value="<?= $action == 'edit' ? $dtlBarang->jumlah_barang : '' ?>" name="jumlah_barang">
+                  <input type="date" class="form-control invoice-input" value="<?= $action == 'edit' ? $dtlBarang->tgl_planning : '' ?>" name="tgl_planning">
                 </div>
+
+                <input type="hidden" name="status" value="proses-produksi">
 
                 <button class="btn btn-primary btn-block">Submit</button>
               </form>
