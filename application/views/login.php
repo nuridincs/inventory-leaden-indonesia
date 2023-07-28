@@ -6,7 +6,7 @@
   <!-- Template CSS -->
   <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/style.css">
   <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/components.css">
-  <title><?php echo $title; ?> &mdash; PT. LEADEN INDONE</title>
+  <title><?php echo $title; ?> &mdash; PT. ABC</title>
 <body>
   <div id="app">
     <section class="section">
