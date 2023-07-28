@@ -19,7 +19,8 @@
     public function index()
     {
       $data = array(
-        'title' => "PT. ABC | Dashboard",
+        'title' => "Sistem Informasi Monitoring Produksi | Dashboard",
+        'barang' => $this->barang->getPlanningList()
       );
 
       $this->load->view('dashboard', $data);
@@ -28,7 +29,7 @@
     public function listMasterBarang()
     {
       $data = array(
-        'title' => "PT. ABC | Master Barang",
+        'title' => "Sistem Informasi Monitoring Produksi | Master Barang",
         'barang' => $this->barang->getData('app_master_barang')
       );
 
@@ -38,7 +39,7 @@
     public function listPlanning()
     {
       $data = array(
-        'title' => "PT. ABC | Barang Masuk",
+        'title' => "Sistem Informasi Monitoring Produksi | Barang Masuk",
         'barang' => $this->barang->getJoinData('kode_barang', 'app_barangs', 'app_master_barang')
       );
 
@@ -48,7 +49,7 @@
     public function listBarangMasuk()
     {
       $data = array(
-        'title' => "PT. ABC | Barang Masuk",
+        'title' => "Sistem Informasi Monitoring Produksi | Barang Masuk",
         'barang' => $this->barang->getJoinData('part_number', 'app_barang', 'app_barang_masuk')
       );
 
@@ -58,7 +59,7 @@
     public function listBarangKeluar()
     {
       $data = array(
-        'title' => "PT. ABC | Barang Masuk",
+        'title' => "Sistem Informasi Monitoring Produksi | Barang Masuk",
         // 'barang' => $this->barang->getJoinData('part_number', 'app_barang_masuk', 'app_barang_keluar')
         'barang' => $this->barang->getDataBarangKeluar()
       );
@@ -69,7 +70,7 @@
     public function listUser()
     {
       $data = array(
-        'title' => "PT. ABC | Data User",
+        'title' => "Sistem Informasi Monitoring Produksi | Data User",
         'user' => $this->barang->getData('app_users')
       );
 
@@ -79,7 +80,7 @@
     public function laporan()
     {
       $data = array(
-        'title' => "PT. ABC | Laporan",
+        'title' => "Sistem Informasi Monitoring Produksi | Laporan",
         'laporan' => $this->barang->getLaporanProduksi()
         // 'barang' => $this->barang->getJoinData('part_number', 'app_barang', 'app_barang_masuk')
       );
@@ -97,7 +98,7 @@
       }
 
       $data = array(
-        'title' => "PT. ABC | Form ". $form,
+        'title' => "Sistem Informasi Monitoring Produksi | Form ". $form,
         'action' => $action,
         'barang' => $this->getData($form, 'app_master_barang'),
         'type' => $this->getData($form, 'app_type'),
@@ -205,7 +206,7 @@
                 <td>'.$item->customer.'</td>
                 <td>'.$item->qty.'</td>
                 <td>'.date('Y-m-d', strtotime($item->tgl_planning)).'</td>
-                <td>'.$item->tgl_masuk.'</td>
+                <td>'.date('Y-m-d', strtotime($item->tgl_masuk)).'</td>
                 <td>'.$item->tgl_keluar.'</td>
                 <td>'.$item->status.'</td>
               </tr>';

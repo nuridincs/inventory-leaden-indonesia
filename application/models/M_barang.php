@@ -9,13 +9,25 @@
       return $query->result();
     }
 
-    public function getJoinData($uniqid, $table1, $table2)
+    public function getJoinData($uniqid, $table1, $table2, $isFlag = false)
     {
       $query = $this->db->select('*')
               ->from($table1)
               ->join($table2, $table2.'.'.$uniqid.'='.$table1.'.'.$uniqid)
               ->get();
       // echo $this->db->last_query();die;
+
+      return $query->result();
+    }
+
+    public function getPlanningList()
+    {
+      $this->db->select('*');
+      $this->db->from('app_barangs');
+      $this->db->join('app_master_barang', 'app_master_barang.kode_barang=app_barangs.kode_barang', 'left');
+      $this->db->where('DATE(app_barangs.tgl_masuk)', date('Y-m-d'));
+
+      $query = $this->db->get();
 
       return $query->result();
     }

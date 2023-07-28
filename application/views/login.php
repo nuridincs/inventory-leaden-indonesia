@@ -6,7 +6,7 @@
   <!-- Template CSS -->
   <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/style.css">
   <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/components.css">
-  <title><?php echo $title; ?> &mdash; PT. ABC</title>
+  <title><?php echo $title; ?> &mdash; Sistem Informasi Monitoring Produksi</title>
 <body>
   <div id="app">
     <section class="section">

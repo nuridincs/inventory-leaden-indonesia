@@ -53,12 +53,13 @@ $this->load->view('_partials/header');
                       <td><?= $data->customer ?></td>
                       <td><?= $data->qty ?></td>
                       <td><?= $data->tgl_planning ?></td>
-                      <td><?= $data->tgl_masuk ?></td>
+                      <td><?= date('Y-m-d', strtotime($data->tgl_masuk)) ?></td>
                       <td><?= $data->tgl_keluar ?></td>
                       <td><?= $data->status ?></td>
                       <td>
-                      <button class="btn btn-icon btn-success" data-toggle="modal" data-target="#modalAddComment" onClick="getID(<?= $data->id ?>)"><i class="fas fa-check-circle"></i></button>
-
+                        <button class="btn btn-icon btn-success" data-toggle="modal" data-target="#modalAddComment" onClick="getID(<?= $data->id ?>)"><i class="fa fa-comment"></i></button>
+                        <button class="btn btn-icon btn-primary" data-toggle="modal" data-target="#modalAddInspector" onClick="getID(<?= $data->id ?>)"><i class="far fa-edit"></i></button>
+                        <button class="btn btn-icon btn-info" data-toggle="tooltip" data-placement="top" title data-original-title="Update Status" data-confirm="Apa Anda yakin ingin menyelesaikan produksi ini?" data-confirm-yes="updateStatus('<?= $data->id ?>');"><i class="fas fa-check-circle"></i></button>
                         <button class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="top" title data-original-title="Hapus Barang" data-confirm="Apa Anda yakin ingin menghapus data ini?" data-confirm-yes="deleteData('<?= $data->id ?>');"><i class="fas fa-trash"></i></button>
                       </td>
                     </tr>
@@ -87,6 +88,37 @@ $this->load->view('_partials/header');
             <div class="form-group">
               <label for="keterangan">Keterangan</label>
               <textarea id="keterangan" class="form-control" placeholder="Masukan Keterangan"></textarea>
+            </div>
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" id="submitVerifikasiBarang">Submit</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="modalAddInspector">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Inspektor Cek</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="total_item_ok">Barang OK</label>
+              <input id="total_item_ok" class="form-control" placeholder="Masukan Qty Ok"/>
+            </div>
+            <div class="form-group">
+              <label for="total_item_reject">Barang Reject</label>
+              <input id="total_item_reject" class="form-control" placeholder="Masukan Qty Reject"/>
             </div>
           </div>
 
