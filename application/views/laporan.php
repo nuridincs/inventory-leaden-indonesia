@@ -27,6 +27,7 @@ $this->load->view('_partials/header');
                     <tr>
                       <th class="text-center">Nomor</th>
                       <th>Kode Barang</th>
+                      <th>Kode Planning</th>
                       <th>Nama Barang</th>
                       <th>Customer</th>
                       <th>Qty</th>
@@ -45,6 +46,7 @@ $this->load->view('_partials/header');
                     <tr>
                       <td><?= $no; ?></td>
                       <td><?= $data->kode_barang ?></td>
+                      <td><?= $data->kode_planning ?></td>
                       <td><?= $data->nama_barang ?></td>
                       <td><?= $data->customer ?></td>
                       <td><?= $data->qty ?></td>

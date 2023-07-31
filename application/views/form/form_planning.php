@@ -54,6 +54,7 @@ $this->load->view('_partials/header');
                 </div>
 
                 <input type="hidden" name="status" value="proses-produksi">
+                <input type="hidden" name="kode_planning" value="<?= $kodePlanning ?>">
 
                 <button class="btn btn-primary btn-block">Submit</button>
               </form>

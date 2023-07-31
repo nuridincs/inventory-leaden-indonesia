@@ -32,6 +32,18 @@
       return $query->result();
     }
 
+    public function getDataByStatus($status = array('proses-qc'), $isMultiple = false)
+    {
+      $this->db->select('*');
+      $this->db->from('app_barangs');
+      $this->db->join('app_master_barang', 'app_master_barang.kode_barang = app_barangs.kode_barang', 'left');
+      $this->db->where_in('app_barangs.status', $status);
+      $this->db->order_by('app_barangs.tgl_planning', 'desc');
+      $query = $this->db->get();
+
+      return $query->result();
+    }
+
     public function getDataBarangKeluar()
     {
       $query = $this->db->select('*')
@@ -113,6 +125,16 @@
       $query = $this->db->select('*')
               ->from('app_master_barang')
               ->order_by('created_at', 'desc')
+              ->limit(1)
+              ->get();
+
+      return $query->row();
+    }
+
+    public function getLastKodePlanning() {
+      $query = $this->db->select('*')
+              ->from('app_barangs')
+              ->order_by('tgl_masuk', 'desc')
               ->limit(1)
               ->get();
 

@@ -38,13 +38,38 @@
 
     public function listPlanning()
     {
+      $barang = $this->barang->getJoinData('kode_barang', 'app_barangs', 'app_master_barang');
+
+      if ($this->session->userdata('role') === 'qc') {
+        $barang = $this->barang->getDataByStatus(array('proses-sampel-qc', 'proses-qc'));
+      }
+
       $data = array(
-        'title' => "Sistem Informasi Monitoring Produksi | Barang Masuk",
-        'barang' => $this->barang->getJoinData('kode_barang', 'app_barangs', 'app_master_barang'),
+        'title' => "Sistem Informasi Monitoring Produksi | List Planning",
+        'barang' => $barang,
         'role' => $this->session->userdata('role')
       );
-
       $this->load->view('planning_produksi/list', $data);
+    }
+
+    public function listDataSample() {
+      $data = array(
+        'title' => "Sistem Informasi Monitoring Produksi | Data Sampel",
+        'barang' => $this->barang->getDataByStatus(array('proses-sampel-qc')),
+        'role' => $this->session->userdata('role'),
+      );
+
+      $this->load->view('data_sample/list', $data);
+    }
+
+    public function laporanProduksi() {
+      $data = array(
+        'title' => "Sistem Informasi Monitoring Produksi | Laporan Produksi",
+        'barang' => $this->barang->getDataByStatus('proses-qc'),
+        'role' => $this->session->userdata('role'),
+      );
+
+      $this->load->view('laporan_produksi/list', $data);
     }
 
     public function listBarangMasuk()
@@ -60,11 +85,10 @@
     public function listBarangKeluar()
     {
       $data = array(
-        'title' => "Sistem Informasi Monitoring Produksi | Barang Masuk",
-        // 'barang' => $this->barang->getJoinData('part_number', 'app_barang_masuk', 'app_barang_keluar')
-        'barang' => $this->barang->getDataBarangKeluar()
+        'title' => "Sistem Informasi Monitoring Produksi | Barang Keluar",
+        'barang' => $this->barang->getDataByStatus('selesai'),
+        'role' => $this->session->userdata('role'),
       );
-
       $this->load->view('barang_keluar/list', $data);
     }
 
@@ -94,13 +118,18 @@
     {
       $dtlBarang = [];
 
-      $dataLastMasterBarang =$this->barang->getLastKodeBarang();
+      $dataLastMasterBarang = $this->barang->getLastKodeBarang();
       $nextSequence = $this->generateNextSequence($dataLastMasterBarang->kode_barang);
       $kodeBarang = $nextSequence;
+
+      $dataLastKodePlanning = $this->barang->getLastKodePlanning();
+      $nextSequenceKP = $this->generateNextSequence($dataLastKodePlanning->kode_planning);
+      $kodePlanning = $nextSequenceKP;
 
       if($action == 'edit') {
         $dtlBarang = $this->getDataByAction($form, $id);
         $kodeBarang = $dtlBarang->kode_barang;
+        $kodePlanning = $dtlBarang->kode_planning;
       }
 
 
@@ -111,7 +140,8 @@
         'type' => $this->getData($form, 'app_type'),
         'role' => $this->barang->getData('app_role'),
         'dtlBarang' => $dtlBarang,
-        'kode_barang' => $kodeBarang
+        'kode_barang' => $kodeBarang,
+        'kodePlanning' => $kodePlanning,
       );
 
       $this->load->view('form/'.$form, $data);
@@ -195,7 +225,8 @@
           <table border="1" width="100" align="center">
             <tr>
               <th style="width:40px" align="center">No</th>
-              <th style="width:150px" align="center">Kode Barang</th>
+              <th style="width:100px" align="center">Kode Barang</th>
+              <th style="width:100px" align="center">Kode Planning</th>
               <th style="width:150px" align="center">Nama Barang</th>
               <th style="width:100px" align="center">Customer</th>
               <th style="width:70px" align="center">Qty</th>
@@ -211,6 +242,7 @@
               $html .= '<tr>
                 <td>'.$no.'</td>
                 <td>'.$item->kode_barang.'</td>
+                <td>'.$item->kode_planning.'</td>
                 <td>'.$item->nama_barang.'</td>
                 <td>'.$item->customer.'</td>
                 <td>'.$item->qty.'</td>

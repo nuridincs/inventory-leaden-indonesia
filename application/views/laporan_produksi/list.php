@@ -6,11 +6,10 @@ $this->load->view('_partials/header');
 <div class="main-content">
   <section class="section">
     <div class="section-header">
-      <h1>Data Perencanaan</h1>
+      <h1>Laporan Hasil Produksi</h1>
       <div class="section-header-breadcrumb">
-        <div class="breadcrumb-item active"><a href="#">Master</a></div>
-        <div class="breadcrumb-item"><a href="#">Barang</a></div>
-        <div class="breadcrumb-item">Masuk</div>
+        <div class="breadcrumb-item active"><a href="#">Laporan</a></div>
+        <div class="breadcrumb-item"><a href="#">Hasil Produksi</a></div>
       </div>
     </div>
 
@@ -19,10 +18,7 @@ $this->load->view('_partials/header');
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <?php if ($role !== 'qc') { ?>
-                <a href="form/form_planning/tambah/0" class="btn btn-primary mb-4">Buat Perencanaan</a>
-              <?php } ?>
-                <div class="table-responsive">
+              <div class="table-responsive">
                 <input type="hidden" id="idSelected">
 
                 <table class="table table-striped" id="table-1">
@@ -32,12 +28,9 @@ $this->load->view('_partials/header');
                       <th>Kode Barang</th>
                       <th>Kode Planning</th>
                       <th>Nama Barang</th>
-                      <th>Customer</th>
                       <th>Qty</th>
-                      <th>Keterangan</th>
+                      <th>Jumlah Produksi</th>
                       <th>Tanggal Planning</th>
-                      <th>Tanggal Masuk</th>
-                      <th>Tanggal Keluar</th>
                       <th>Status</th>
                       <th>Action</th>
                     </tr>
@@ -46,45 +39,21 @@ $this->load->view('_partials/header');
                   <?php
                     $no = 0;
                     $leadtime = 30;
+
                     foreach($barang as $data) {
                       $no++;
-                      $latestStatus = $data->status;
-                      if ($data->status === 'proses-sampel-qc' && $data->jumlah_sample) {
-                        $latestStatus = 'proses-qc';
-                      }
                   ?>
                     <tr>
                       <td><?= $no; ?></td>
                       <td><?= $data->kode_barang ?></td>
                       <td><?= $data->kode_planning ?></td>
                       <td><?= $data->nama_barang ?></td>
-                      <td><?= $data->customer ?></td>
                       <td><?= $data->qty ?></td>
-                      <td><?= $data->keterangan ?></td>
+                      <td><?= $data->jumlah_produksi ?></td>
                       <td><?= $data->tgl_planning ?></td>
-                      <td><?= date('Y-m-d', strtotime($data->tgl_masuk)) ?></td>
-                      <td><?= $data->tgl_keluar ?></td>
-                      <td><?= $latestStatus ?></td>
+                      <td><?= $data->status ?></td>
                       <td>
-                        <?php if($this->session->userdata['role'] === 'qc' && in_array($data->status, ['proses-qc', 'proses-sampel-qc'])) { ?>
-                          <button class="btn btn-icon btn-primary" data-toggle="modal" data-target="#modalAddInspector" onClick="getID(<?= $data->id ?>)"><i class="far fa-edit"></i></button>
-                        <?php } ?>
-
-                        <?php
-                          $role = ['ppic', 'admin'];
-                          if (in_array($this->session->userdata['role'], $role)) {
-                        ?>
-                          <button class="btn btn-icon btn-info" data-toggle="tooltip" data-placement="top" title data-original-title="Update Status Produksi" data-confirm="Apa Anda yakin ingin menyelesaikan produksi ini?" data-confirm-yes="updateStatus('<?= $data->id ?>');"><i class="fas fa-check-circle"></i></button>
-                          <button class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="top" title data-original-title="Hapus Barang" data-confirm="Apa Anda yakin ingin menghapus data ini?" data-confirm-yes="deleteData('<?= $data->id ?>');"><i class="fas fa-trash"></i></button>
-                          <button class="btn btn-icon btn-primary" data-toggle="modal" data-target="#modalAddInspector" onClick="getID(<?= $data->id ?>)"><i class="far fa-edit"></i></button>
-                        <?php } ?>
-
-                        <?php if($this->session->userdata['role'] === 'qc' && $data->status === 'selesai') { ?>
-                        <?php } else { ?>
-                          <?php if(!$data->jumlah_sample) { ?>
-                          <button class="btn btn-icon btn-success" data-toggle="tooltip" data-placement="top" title data-original-title="Update Status Data Sampel" data-confirm="Apakah Anda yakin ingin memproses data sampel ini?" data-confirm-yes="updateStatus('<?= $data->id ?>', 'data-sample');"><i class="fas fa-check-circle"></i></button>
-                          <?php } ?>
-                        <?php } ?>
+                          <button class="btn btn-icon btn-info" data-toggle="modal" data-target="#modalAddHasilProduksi" onClick="getID(<?= $data->id ?>)"><i class="fa fa-comment"></i></button>
                       </td>
                     </tr>
                   <?php } ?>
@@ -97,27 +66,27 @@ $this->load->view('_partials/header');
       </div>
     </div>
 
-    <div class="modal" id="modalAddComment">
+    <div class="modal" id="modalAddHasilProduksi">
       <div class="modal-dialog">
         <div class="modal-content">
 
           <!-- Modal Header -->
           <div class="modal-header">
-            <h4 class="modal-title">Tambahkan Komentar</h4>
+            <h4 class="modal-title">Tambahkan Hasil Produksi</h4>
             <button type="button" class="close" data-dismiss="modal">&times;</button>
           </div>
 
           <!-- Modal body -->
           <div class="modal-body">
             <div class="form-group">
-              <label for="keterangan">Keterangan</label>
-              <textarea id="keterangan" class="form-control" placeholder="Masukan Keterangan"></textarea>
+              <label for="jumlah_produksi">Jumlah Produksi</label>
+              <input type="number" id="jumlah_produksi" class="form-control" placeholder="Masukan Jumlah Produksi"/>
             </div>
           </div>
 
           <!-- Modal footer -->
           <div class="modal-footer">
-            <button type="submit" class="btn btn-primary" id="submitAddComment">Submit</button>
+            <button type="submit" class="btn btn-primary" id="submitAddSample">Submit</button>
             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
           </div>
         </div>
@@ -175,12 +144,13 @@ $this->load->view('_partials/header');
     });
   }
 
-  $('#submitAddComment').click(function() {
+  $('#submitAddSample').click(function() {
     const formData = {
       id: $('#idSelected').val(),
       idName: 'id',
       table: 'app_barangs',
       data: {
+        jumlah_produksi: $('#jumlah_produksi').val(),
         keterangan: $('#keterangan').val(),
       }
     }
@@ -191,8 +161,6 @@ $this->load->view('_partials/header');
   });
 
   $('#submitInspectorCek').click(function() {
-    const currentdate = new Date();
-
     const formData = {
       id: $('#idSelected').val(),
       idName: 'id',
@@ -200,11 +168,9 @@ $this->load->view('_partials/header');
       data: {
         qty_ok: $('#qty_ok').val(),
         qty_reject: $('#qty_reject').val(),
-        status: 'selesai',
-        tgl_keluar: new Date(currentdate.getTime() - (currentdate.getTimezoneOffset() * 60000)).toISOString().split(".")[0].replace(/[T:]/g, '-')
+        status: 'selesai'
       }
     }
-    console.log("formData:", formData);
 
     $.post('<?= base_url('barang/updateStatus'); ?>', formData, function( data ) {
       window.location.reload();
