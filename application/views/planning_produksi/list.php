@@ -34,6 +34,8 @@ $this->load->view('_partials/header');
                       <th>Nama Barang</th>
                       <th>Customer</th>
                       <th>Qty</th>
+                      <th>Qty Ok</th>
+                      <th>Qty Reject</th>
                       <th>Keterangan</th>
                       <th>Tanggal Planning</th>
                       <th>Tanggal Masuk</th>
@@ -60,6 +62,8 @@ $this->load->view('_partials/header');
                       <td><?= $data->nama_barang ?></td>
                       <td><?= $data->customer ?></td>
                       <td><?= $data->qty ?></td>
+                      <td><?= $data->qty_ok ?></td>
+                      <td><?= $data->qty_reject ?></td>
                       <td><?= $data->keterangan ?></td>
                       <td><?= $data->tgl_planning ?></td>
                       <td><?= date('Y-m-d', strtotime($data->tgl_masuk)) ?></td>

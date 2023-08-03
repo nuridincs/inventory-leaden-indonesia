@@ -29,6 +29,8 @@ $this->load->view('_partials/header');
                       <th>Kode Planning</th>
                       <th>Nama Barang</th>
                       <th>Qty</th>
+                      <th>Qty Ok</th>
+                      <th>Qty Reject</th>
                       <th>Tanggal Planning</th>
                       <th>Status</th>
                       <th>Action</th>
@@ -48,6 +50,8 @@ $this->load->view('_partials/header');
                       <td><?= $data->kode_planning ?></td>
                       <td><?= $data->nama_barang ?></td>
                       <td><?= $data->qty ?></td>
+                      <td><?= $data->qty_ok ?></td>
+                      <td><?= $data->qty_reject ?></td>
                       <td><?= $data->tgl_planning ?></td>
                       <td><?= $data->status ?></td>
                       <td>

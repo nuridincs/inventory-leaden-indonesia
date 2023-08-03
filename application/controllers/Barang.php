@@ -19,7 +19,7 @@
     public function index()
     {
       $data = array(
-        'title' => "Sistem Informasi Monitoring Produksi | Dashboard",
+        'title' => "Sistem Informasi Pengontrolan Produksi | Dashboard",
         'barang' => $this->barang->getPlanningList()
       );
 
@@ -29,7 +29,7 @@
     public function listMasterBarang()
     {
       $data = array(
-        'title' => "Sistem Informasi Monitoring Produksi | Master Barang",
+        'title' => "Sistem Informasi Pengontrolan Produksi | Master Barang",
         'barang' => $this->barang->getData('app_master_barang')
       );
 
@@ -45,7 +45,7 @@
       }
 
       $data = array(
-        'title' => "Sistem Informasi Monitoring Produksi | List Planning",
+        'title' => "Sistem Informasi Pengontrolan Produksi | List Planning",
         'barang' => $barang,
         'role' => $this->session->userdata('role')
       );
@@ -54,7 +54,7 @@
 
     public function listDataSample() {
       $data = array(
-        'title' => "Sistem Informasi Monitoring Produksi | Data Sampel",
+        'title' => "Sistem Informasi Pengontrolan Produksi | Data Sampel",
         'barang' => $this->barang->getDataByStatus(array('proses-sampel-qc')),
         'role' => $this->session->userdata('role'),
       );
@@ -64,7 +64,7 @@
 
     public function laporanProduksi() {
       $data = array(
-        'title' => "Sistem Informasi Monitoring Produksi | Laporan Produksi",
+        'title' => "Sistem Informasi Pengontrolan Produksi | Laporan Produksi",
         'barang' => $this->barang->getDataByStatus('proses-qc'),
         'role' => $this->session->userdata('role'),
       );
@@ -75,7 +75,7 @@
     public function listBarangMasuk()
     {
       $data = array(
-        'title' => "Sistem Informasi Monitoring Produksi | Barang Masuk",
+        'title' => "Sistem Informasi Pengontrolan Produksi | Barang Masuk",
         'barang' => $this->barang->getJoinData('part_number', 'app_barang', 'app_barang_masuk')
       );
 
@@ -85,7 +85,7 @@
     public function listBarangKeluar()
     {
       $data = array(
-        'title' => "Sistem Informasi Monitoring Produksi | Barang Keluar",
+        'title' => "Sistem Informasi Pengontrolan Produksi | Barang Keluar",
         'barang' => $this->barang->getDataByStatus('selesai'),
         'role' => $this->session->userdata('role'),
       );
@@ -95,7 +95,7 @@
     public function listUser()
     {
       $data = array(
-        'title' => "Sistem Informasi Monitoring Produksi | Data User",
+        'title' => "Sistem Informasi Pengontrolan Produksi | Data User",
         'user' => $this->barang->getData('app_users')
       );
 
@@ -105,7 +105,7 @@
     public function laporan()
     {
       $data = array(
-        'title' => "Sistem Informasi Monitoring Produksi | Laporan",
+        'title' => "Sistem Informasi Pengontrolan Produksi | Laporan",
         'laporan' => $this->barang->getLaporanProduksi()
         // 'barang' => $this->barang->getJoinData('part_number', 'app_barang', 'app_barang_masuk')
       );
@@ -134,7 +134,7 @@
 
 
       $data = array(
-        'title' => "Sistem Informasi Monitoring Produksi | Form ". $form,
+        'title' => "Sistem Informasi Pengontrolan Produksi | Form ". $form,
         'action' => $action,
         'barang' => $this->getData($form, 'app_master_barang'),
         'type' => $this->getData($form, 'app_type'),
@@ -183,7 +183,7 @@
       $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
       // document informasi
-      $pdf->SetCreator('Monitoring Produksi');
+      $pdf->SetCreator('Pengontrolan Produksi');
 
       $pdf->SetTitle('Laporan');
       $pdf->SetSubject('Laporan');
@@ -227,9 +227,11 @@
               <th style="width:40px" align="center">No</th>
               <th style="width:100px" align="center">Kode Barang</th>
               <th style="width:100px" align="center">Kode Planning</th>
-              <th style="width:150px" align="center">Nama Barang</th>
-              <th style="width:100px" align="center">Customer</th>
-              <th style="width:70px" align="center">Qty</th>
+              <th style="width:120px" align="center">Nama Barang</th>
+              <th style="width:70px" align="center">Customer</th>
+              <th style="width:50px" align="center">Qty</th>
+              <th style="width:50px" align="center">Qty Ok</th>
+              <th style="width:50px" align="center">Qty Reject</th>
               <th style="width:100px" align="center">Tanggal Planning</th>
               <th style="width:100px" align="center">Tanggal Masuk</th>
               <th style="width:100px" align="center">Tanggal Keluar</th>
@@ -246,6 +248,8 @@
                 <td>'.$item->nama_barang.'</td>
                 <td>'.$item->customer.'</td>
                 <td>'.$item->qty.'</td>
+                <td>'.$item->qty_ok.'</td>
+                <td>'.$item->qty_reject.'</td>
                 <td>'.date('Y-m-d', strtotime($item->tgl_planning)).'</td>
                 <td>'.date('Y-m-d', strtotime($item->tgl_masuk)).'</td>
                 <td>'.$item->tgl_keluar.'</td>

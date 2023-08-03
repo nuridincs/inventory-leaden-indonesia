@@ -12,7 +12,7 @@ $this->load->view('_partials/header');
     </div>
 
     <div class="section-body">
-      <h1 class="mb-5">Selamat Datang di Sistem Informasi Monitoring Produksi</h1>
+      <h1 class="mb-5">Selamat Datang di Sistem Informasi Pengontrolan Produksi</h1>
 
       <div>
         <h4 class="text-center">Data Produksi <?= date("l").", ".date("d-m-Y") ?></h4>
