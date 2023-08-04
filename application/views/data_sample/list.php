@@ -163,6 +163,7 @@ $this->load->view('_partials/header');
       data: {
         jumlah_sample: $('#jumlah_sample').val(),
         keterangan: $('#keterangan').val(),
+        status: 'release-produksi'
       }
     }
 

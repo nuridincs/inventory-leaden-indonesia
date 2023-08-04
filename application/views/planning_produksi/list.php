@@ -19,7 +19,7 @@ $this->load->view('_partials/header');
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <?php if ($role !== 'qc') { ?>
+              <?php if (in_array($role, ['ppic', 'admin'])) { ?>
                 <a href="form/form_planning/tambah/0" class="btn btn-primary mb-4">Buat Perencanaan</a>
               <?php } ?>
                 <div class="table-responsive">
@@ -54,6 +54,14 @@ $this->load->view('_partials/header');
                       if ($data->status === 'proses-sampel-qc' && $data->jumlah_sample) {
                         $latestStatus = 'proses-qc';
                       }
+
+                      $labelStatusProduksi = 'Update Status Selesai Produksi';
+                      $statusProduksi = 'proses-qc';
+
+                      if ($data->status === 'pending') {
+                        $labelStatusProduksi = 'Update Status Proses Produksi';
+                        $statusProduksi = 'proses-produksi';
+                      }
                   ?>
                     <tr>
                       <td><?= $no; ?></td>
@@ -70,23 +78,42 @@ $this->load->view('_partials/header');
                       <td><?= $data->tgl_keluar ?></td>
                       <td><?= $latestStatus ?></td>
                       <td>
-                        <?php if($this->session->userdata['role'] === 'qc' && in_array($data->status, ['proses-qc', 'proses-sampel-qc'])) { ?>
-                          <button class="btn btn-icon btn-primary" data-toggle="modal" data-target="#modalAddInspector" onClick="getID(<?= $data->id ?>)"><i class="far fa-edit"></i></button>
+                        <?php if($this->session->userdata['role'] === 'qc') { ?>
+                          <?php if(in_array($data->status, ['proses-produksi'])) { ?>
+                            <button class="btn btn-icon btn-success" data-toggle="tooltip" data-placement="top" title data-original-title="Update Status Data Sampel" data-confirm="Apakah Anda yakin ingin memproses data sampel ini?" data-confirm-yes="updateStatus('<?= $data->id ?>', 'proses-sampel-qc');"><i class="fas fa-check-circle"></i></button>
+                          <?php } ?>
+                          <?php if($data->status === 'proses-qc') { ?>
+                            <button class="btn btn-icon btn-primary" data-toggle="modal" data-target="#modalAddInspector" onClick="getID(<?= $data->id ?>)"><i class="far fa-edit"></i></button>
+                          <?php } ?>
                         <?php } ?>
 
                         <?php
-                          $role = ['ppic', 'admin'];
+                          $role = ['ppic'];
                           if (in_array($this->session->userdata['role'], $role)) {
                         ?>
-                          <button class="btn btn-icon btn-info" data-toggle="tooltip" data-placement="top" title data-original-title="Update Status Produksi" data-confirm="Apa Anda yakin ingin menyelesaikan produksi ini?" data-confirm-yes="updateStatus('<?= $data->id ?>');"><i class="fas fa-check-circle"></i></button>
                           <button class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="top" title data-original-title="Hapus Barang" data-confirm="Apa Anda yakin ingin menghapus data ini?" data-confirm-yes="deleteData('<?= $data->id ?>');"><i class="fas fa-trash"></i></button>
-                          <button class="btn btn-icon btn-primary" data-toggle="modal" data-target="#modalAddInspector" onClick="getID(<?= $data->id ?>)"><i class="far fa-edit"></i></button>
+                          <a href="form/form_planning/edit/<?= $data->kode_barang ?>" class="btn btn-icon btn-primary"><i class="far fa-edit"></i></a>
+                        <?php } ?>
+                        <?php
+                          $role = ['produksi'];
+                          if (in_array($this->session->userdata['role'], $role)) {
+                        ?>
+                          <?php if(in_array($data->status, ['pending', 'release-produksi'])) { ?>
+                            <button class="btn btn-icon btn-info" data-toggle="tooltip" data-placement="top" title data-original-title="<?= $labelStatusProduksi ?>" data-confirm="Apa Anda yakin ingin <?= $labelStatusProduksi ?> ini?" data-confirm-yes="updateStatus('<?= $data->id ?>', '<?= $statusProduksi ?>');"><i class="fas fa-check-circle"></i></button>
+                          <?php } ?>
                         <?php } ?>
 
-                        <?php if($this->session->userdata['role'] === 'qc' && $data->status === 'selesai') { ?>
-                        <?php } else { ?>
-                          <?php if(!$data->jumlah_sample) { ?>
-                          <button class="btn btn-icon btn-success" data-toggle="tooltip" data-placement="top" title data-original-title="Update Status Data Sampel" data-confirm="Apakah Anda yakin ingin memproses data sampel ini?" data-confirm-yes="updateStatus('<?= $data->id ?>', 'data-sample');"><i class="fas fa-check-circle"></i></button>
+                        <?php
+                          $role = ['admin'];
+                          if (in_array($this->session->userdata['role'], $role)) {
+                        ?>
+                          <?php if(!in_array($data->status, ['sudah-diterima', 'selesai'])) { ?>
+                            <button class="btn btn-icon btn-info" data-toggle="tooltip" data-placement="top" title data-original-title="<?= $labelStatusProduksi ?>" data-confirm="Apa Anda yakin ingin <?= $labelStatusProduksi ?> ini?" data-confirm-yes="updateStatus('<?= $data->id ?>', '<?= $statusProduksi ?>');"><i class="fas fa-check-circle"></i></button>
+                            <button class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="top" title data-original-title="Hapus Barang" data-confirm="Apa Anda yakin ingin menghapus data ini?" data-confirm-yes="deleteData('<?= $data->id ?>');"><i class="fas fa-trash"></i></button>
+                            <button class="btn btn-icon btn-primary" data-toggle="modal" data-target="#modalAddInspector" onClick="getID(<?= $data->id ?>)"><i class="far fa-edit"></i></button>
+                            <button class="btn btn-icon btn-success" data-toggle="tooltip" data-placement="top" title data-original-title="Update Status Data Sampel" data-confirm="Apakah Anda yakin ingin memproses data sampel ini?" data-confirm-yes="updateStatus('<?= $data->id ?>', 'proses-sampel-qc');"><i class="fas fa-check-circle"></i></button>
+                            <a href="form/form_planning/edit/<?= $data->kode_barang ?>" class="btn btn-icon btn-success"><i class="far fa-edit"></i></a>
+                            <button class="btn btn-icon btn-primary" data-toggle="tooltip" data-placement="top" title data-original-title="Update Status Barang Diterima" data-confirm="Apakah Anda yakin barang ini sudah diterima?" data-confirm-yes="updateStatus('<?= $data->id ?>');"><i class="fas fa-check-circle"></i></button>
                           <?php } ?>
                         <?php } ?>
                       </td>
@@ -96,33 +123,6 @@ $this->load->view('_partials/header');
                 </table>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal" id="modalAddComment">
-      <div class="modal-dialog">
-        <div class="modal-content">
-
-          <!-- Modal Header -->
-          <div class="modal-header">
-            <h4 class="modal-title">Tambahkan Komentar</h4>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-          </div>
-
-          <!-- Modal body -->
-          <div class="modal-body">
-            <div class="form-group">
-              <label for="keterangan">Keterangan</label>
-              <textarea id="keterangan" class="form-control" placeholder="Masukan Keterangan"></textarea>
-            </div>
-          </div>
-
-          <!-- Modal footer -->
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-primary" id="submitAddComment">Submit</button>
-            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
@@ -219,13 +219,7 @@ $this->load->view('_partials/header');
     $('#idSelected').val(id);
   }
 
-  function updateStatus(id, type = null) {
-    let status = 'proses-qc';
-
-    if (type === 'data-sample') {
-      status = 'proses-sampel-qc'
-    }
-
+  function updateStatus(id, status = null) {
     const formData = {
       id,
       idName: 'id',

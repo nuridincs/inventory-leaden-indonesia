@@ -41,7 +41,11 @@
       $barang = $this->barang->getJoinData('kode_barang', 'app_barangs', 'app_master_barang');
 
       if ($this->session->userdata('role') === 'qc') {
-        $barang = $this->barang->getDataByStatus(array('proses-sampel-qc', 'proses-qc'));
+        $barang = $this->barang->getDataByStatus(array('proses-sampel-qc', 'proses-qc', 'proses-produksi', 'release-produksi'));
+      }
+
+      if ($this->session->userdata('role') === 'produksi') {
+        $barang = $this->barang->getDataByStatus(array('pending', 'proses-produksi', 'proses-sampel-qc', 'release-produksi'));
       }
 
       $data = array(
@@ -128,8 +132,11 @@
 
       if($action == 'edit') {
         $dtlBarang = $this->getDataByAction($form, $id);
+        // print_r($dtlBarang);die();
         $kodeBarang = $dtlBarang->kode_barang;
-        $kodePlanning = $dtlBarang->kode_planning;
+        if ($form === 'form_planning') {
+          $kodePlanning = $dtlBarang->kode_planning;
+        }
       }
 
 
@@ -153,7 +160,6 @@
       if($form == 'form_barang') {
         $result = $this->barang->getDataByID('app_master_barang', 'kode_barang', $id);
       }
-      // print_r($result);die;
 
       if($form == 'form_permintaan') {
         $result = $this->barang->getDataByID('app_barang_masuk', 'id', $id);
@@ -161,6 +167,10 @@
 
       if($form == 'form_user') {
         $result = $this->barang->getDataByID('app_users', 'id', $id);
+      }
+
+      if($form == 'form_planning') {
+        $result = $this->barang->getDataByID('app_barangs', 'kode_barang', $id);
       }
 
       return $result;
@@ -426,6 +436,11 @@
       if ($table == 'app_master_barang') {
         $idName = 'kode_barang';
         $redirect = '/listMasterBarang';
+      }
+
+      if ($table == 'app_barangs') {
+        $idName = 'id';
+        $redirect = '/listPlanning';
       }
 
       if ($table == 'app_barang_masuk') {

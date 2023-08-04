@@ -27,7 +27,7 @@ $this->load->view('_partials/header');
                 <div class="form-group">
                   <label>Kode Barang</label>
                   <?php if ($action == 'edit') { ?>
-                    <input type="text" class="form-control invoice-input" <?= $action == 'edit' ? 'disabled' : '' ?> value="<?= $action == 'edit' ? $dtlBarang->part_number : '' ?>" name="part_number">
+                    <input type="text" class="form-control invoice-input" <?= $action == 'edit' ? 'disabled' : '' ?> value="<?= $action == 'edit' ? $dtlBarang->kode_barang : '' ?>" name="kode_barang">
                   <?php } else { ?>
                     <select class="form-control" name="kode_barang">
                       <?php foreach($barang as $data) { ?>
@@ -53,7 +53,7 @@ $this->load->view('_partials/header');
                   <input type="date" class="form-control invoice-input" value="<?= $action == 'edit' ? $dtlBarang->tgl_planning : '' ?>" name="tgl_planning">
                 </div>
 
-                <input type="hidden" name="status" value="proses-produksi">
+                <input type="hidden" name="status" value="pending">
                 <input type="hidden" name="kode_planning" value="<?= $kodePlanning ?>">
 
                 <button class="btn btn-primary btn-block">Submit</button>

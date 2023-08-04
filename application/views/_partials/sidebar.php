@@ -73,6 +73,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           $role = ['produksi'];
           if (in_array($this->session->userdata['role'], $role)) {
         ?>
+          <li class="<?php echo $this->uri->segment(2) == 'listPlanning' ? 'active' : ''; ?>">
+            <a class="nav-link" href="<?php echo base_url(); ?>barang/listPlanning"><i class="fas fa-folder-open"></i> <span>Planning - Produksi</span></a>
+          </li>
           <li class="<?php echo $this->uri->segment(2) == 'laporanProduksi' ? 'active' : ''; ?>">
             <a href="<?php echo base_url(); ?>barang/laporanProduksi" class="nav-link"><i class="fas fa-th"></i> <span>Hasil Laporan Produksi</span></a>
           </li>
