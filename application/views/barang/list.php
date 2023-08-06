@@ -66,7 +66,7 @@ $this->load->view('_partials/header');
     const formData = {
       id: id,
       idName: 'kode_barang',
-      table: 'app_barang'
+      table: 'app_master_barang'
     }
 
     $.post('<?= base_url('barang/actionDelete'); ?>', formData, function( data ) {

@@ -27,12 +27,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <li class="<?php echo $this->uri->segment(2) == 'listDataSample' ? 'active' : ''; ?>">
             <a class="nav-link" href="<?php echo base_url(); ?>barang/listDataSample"><i class="fas fa-folder-open"></i> <span>Data Sampel</span></a>
         </li>
-        <!-- <li class="<?php // echo $this->uri->segment(2) == 'listBarangKeluar' ? 'active' : ''; ?>">
-          <a href="<?php // echo base_url(); ?>barang/listBarangKeluar" class="nav-link"><i class="fas fa-folder-minus"></i> <span>Barang Keluar</span></a>
-        </li> -->
-        <!-- <li class="<?php //echo $this->uri->segment(2) == 'listUser' ? 'active' : ''; ?>">
-          <a href="<?php //echo base_url(); ?>barang/listUser" class="nav-link"><i class="fas fa-users"></i> <span>Kelola User</span></a>
-        </li> -->
         <li class="<?php echo $this->uri->segment(2) == 'listBarangKeluar' ? 'active' : ''; ?>">
           <a href="<?php echo base_url(); ?>barang/listBarangKeluar" class="nav-link"><i class="fas fa-th"></i> <span>Barang Keluar</span></a>
         </li>

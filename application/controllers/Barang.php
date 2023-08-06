@@ -76,16 +76,6 @@
       $this->load->view('laporan_produksi/list', $data);
     }
 
-    public function listBarangMasuk()
-    {
-      $data = array(
-        'title' => "Sistem Informasi Pengontrolan Produksi | Barang Masuk",
-        'barang' => $this->barang->getJoinData('part_number', 'app_barang', 'app_barang_masuk')
-      );
-
-      $this->load->view('barang_masuk/list', $data);
-    }
-
     public function listBarangKeluar()
     {
       $data = array(
@@ -111,9 +101,7 @@
       $data = array(
         'title' => "Sistem Informasi Pengontrolan Produksi | Laporan",
         'laporan' => $this->barang->getLaporanProduksi()
-        // 'barang' => $this->barang->getJoinData('part_number', 'app_barang', 'app_barang_masuk')
       );
-      // print_r($data);die;
 
       $this->load->view('laporan', $data);
     }
@@ -278,111 +266,6 @@
       $pdf->Output('report.pdf', 'I');
     }
 
-    public function cetakInvoice($id)
-    {
-      $data = $this->barang->getInvoiceData($id);
-      $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-
-      // document informasi
-      $pdf->SetCreator('Invoice');
-      $pdf->SetTitle('Invoice Barang Keluar');
-      $pdf->SetSubject('Barang Keluar');
-
-      //header Data
-      // $pdf->SetHeaderData('rubberman-logo.jpg',30,'','',array(203, 58, 44),array(0, 0, 0));
-      // $pdf->SetFooterData(array(255, 255, 255), array(255, 255, 255));
-
-
-      $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN,'',PDF_FONT_SIZE_MAIN));
-      $pdf->setFooterFont(Array(PDF_FONT_NAME_MAIN,'',PDF_FONT_SIZE_MAIN));
-
-      $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-
-      //set margin
-      $pdf->SetMargins(PDF_MARGIN_LEFT,PDF_MARGIN_TOP + 10,PDF_MARGIN_RIGHT);
-      $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-      $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-
-      $pdf->SetAutoPageBreak(FALSE, PDF_MARGIN_BOTTOM - 5);
-
-      //SET Scaling ImagickPixel
-      $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-
-      //FONT Subsetting
-      $pdf->setFontSubsetting(true);
-
-      $pdf->SetFont('helvetica','',14,'',true);
-
-      $pdf->AddPage('L');
-
-      $html=
-        '<div>
-          <h1 align="center">Invoice Bukti Pengeluaran Barang</h1>
-
-          <table border="1">
-            <tr>
-              <th style="width:40px" align="center">No</th>
-              <th style="width:300px" align="center">Part Number</th>
-              <th style="width:300px" align="center">Part Name</th>
-              <th style="width:200" align="center">Jumlah Barang Keluar</th>
-            </tr>';
-        $no = 0;
-        foreach($data as $item) {
-          $no++;
-          $html .= '<tr>
-            <td align="center">'.$no.'</td>
-            <td align="center">'.$item->part_number.'</td>
-            <td align="center">'.$item->part_name.'</td>
-            <td align="center">'.$item->jumlah_barang_keluar.'</td>
-          </tr>';
-        }
-
-        $html .='
-            </table>
-            <h6>Mengetahui</h6><br>
-            <h6>Manager</h6>
-          </div>';
-
-      $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 0, 0, true, '', true);
-
-      $pdf->Output('contoh_report.pdf', 'I');
-    }
-
-    public function getBarangByType()
-    {
-      $request = $this->input->post();
-      $data = $this->barang->getDataByType($request['id']);
-
-      $_view = '';
-      $index = 0;
-
-      if (count($data) > 0) {
-        $_view .= '<div class="row mb-4">';
-          $_view .= '<div class="col"><strong>Part Number</strong><br></div>';
-          $_view .= '<div class="col"><strong>BOM</strong><br></div>';
-          $_view .= '<div class="col"><strong>Jumlah Barang</strong><br></div>';
-        $_view .= '</div>';
-
-        foreach($data as $value) {
-          $_view .= '<div class="row mb-4">';
-            $_view .= '<div class="col">'.$value->part_number.'</div>';
-            $_view .= '<div class="col">'.$value->bom.' Unit</div>';
-            $_view .= '<div class="col">';
-              $_view .= '<input type="text" class="form-control invoice-input w-50" name="jumlah_barang[]" id="jumlah_barang'.$value->part_number.'" placeholder="Masukan Jumlah" require onkeyup="checkSS('.$value->part_number.')" />';
-              $_view .= '<input type="hidden" class="form-control invoice-input w-50" name="part_number[]" value="'.$value->part_number.'" />';
-              $_view .= '<input type="hidden" class="form-control invoice-input w-50" name="id_barang_masuk[]" value="'.$value->id_barang_masuk.'" />';
-              $_view .= '<input type="hidden" class="form-control invoice-input w-50" name="id_type_barang[]" value="'.$value->id_type_barang.'" />';
-              $_view .= '<small class="badge badge-danger mt-2" style="display:none" id="error'.$value->part_number.'">Jumlah Melebihi Safety Stok</small>';
-            $_view .= '</div>';
-          $_view .= '</div>';
-          $index++;
-        }
-      } else {
-        $_view .= '<h2 class="mb-4 text-center">Data Barang Tidak ditemukan</h2>';
-      }
-      echo $_view;
-    }
-
     public function actionAdd($table)
     {
 
@@ -394,10 +277,6 @@
 
       if ($table == 'app_barangs') {
         $redirect = '/listPlanning';
-      }
-
-      if ($table == 'app_barang_masuk') {
-        $redirect = '/listBarangMasuk';
       }
 
       if ($table == 'app_users') {
@@ -443,11 +322,6 @@
         $redirect = '/listPlanning';
       }
 
-      if ($table == 'app_barang_masuk') {
-        $idName = 'id';
-        $redirect = '/listBarangMasuk';
-      }
-
       if ($table == 'app_users') {
         $idName = 'id';
         $redirect = '/listUser';
@@ -491,45 +365,6 @@
       $this->barang->updateData($table, $request, $idName, $id);
     }
 
-    public function updateBarangKeluar()
-    {
-      $request = $this->input->post();
-      $tmpArrayData = [];
-
-      for ($i=0; $i < count($request['jumlah_barang']); $i++) {
-        $tmpArrayData[] = [
-          'part_number' => $request['part_number'][$i],
-          'jumlah_barang' => $request['jumlah_barang'][$i],
-          'id_barang_masuk' => $request['id_barang_masuk'][$i],
-          'id_type_barang' => $request['id_type_barang'][$i],
-        ];
-      }
-
-      for ($ii=0; $ii < count($tmpArrayData) ; $ii++) {
-        if ($tmpArrayData[$ii]['jumlah_barang'] != "" || $tmpArrayData[$ii]['jumlah_barang'] != null) {
-          $table = 'app_barang_masuk';
-          $idName = 'id';
-          $id = $tmpArrayData[$ii]['id_barang_masuk'];
-          $getBarangMasuk = $this->barang->getDataByID('app_barang_masuk', 'id', $id);
-          $updateJumlahBarang = $getBarangMasuk->jumlah_barang - $tmpArrayData[$ii]['jumlah_barang'];
-          $request = array('jumlah_barang' => $updateJumlahBarang);
-
-          $formBarangKeluar = [
-            'part_number' => $tmpArrayData[$ii]['part_number'],
-            'jumlah_barang_keluar' => $tmpArrayData[$ii]['jumlah_barang'],
-            'tanggal_keluar' => date('Y-m-d'),
-            'id_type' => $tmpArrayData[$ii]['id_type_barang'],
-            'sisa_barang' => $updateJumlahBarang,
-          ];
-
-          $this->barang->updateData($table, $request, $idName, $id);
-          $this->db->insert('app_barang_keluar', $formBarangKeluar);
-        }
-      }
-
-      redirect('barang/listBarangKeluar');
-    }
-
     private function generateData($request)
     {
       $data = [
@@ -548,19 +383,8 @@
       $idName = $this->input->post('idName');
       $table = $this->input->post('table');
 
-      if ($table == 'app_barang') {
-        $this->db->where('part_number', $id);
-        $this->db->delete('app_barang_keluar');
-
-        $this->db->where('part_number', $id);
-        $this->db->delete('app_barang_masuk');
-
-        $this->db->where($idName, $id);
-        $this->db->delete($table);
-      } else {
-        $this->db->where($idName, $id);
-        $this->db->delete($table);
-      }
+      $this->db->where($idName, $id);
+      $this->db->delete($table);
     }
 
     public function checkSafetyStock()
