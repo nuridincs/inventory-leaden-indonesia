@@ -223,22 +223,26 @@
           <table border="1" width="100" align="center">
             <tr>
               <th style="width:40px" align="center">No</th>
-              <th style="width:100px" align="center">Kode Barang</th>
-              <th style="width:100px" align="center">Kode Planning</th>
+              <th style="width:80px" align="center">Kode Barang</th>
+              <th style="width:80px" align="center">Kode Planning</th>
               <th style="width:120px" align="center">Nama Barang</th>
               <th style="width:70px" align="center">Customer</th>
               <th style="width:50px" align="center">Qty</th>
               <th style="width:50px" align="center">Qty Ok</th>
               <th style="width:50px" align="center">Qty Reject</th>
-              <th style="width:100px" align="center">Tanggal Planning</th>
-              <th style="width:100px" align="center">Tanggal Masuk</th>
-              <th style="width:100px" align="center">Tanggal Keluar</th>
+              <th style="width:50px" align="center">Jumlah Sampel</th>
+              <th style="width:50px" align="center">Total Produksi</th>
+              <th style="width:80px" align="center">Tanggal Planning</th>
+              <th style="width:80px" align="center">Tanggal Masuk</th>
+              <th style="width:80px" align="center">Tanggal Keluar</th>
               <th style="width:100px" align="center">Status</th>
             </tr>';
 
             $no = 0;
             foreach($data as $item) {
               $no++;
+              $jumlah_produksi = $item->qty - $item->qty_reject;
+
               $html .= '<tr>
                 <td>'.$no.'</td>
                 <td>'.$item->kode_barang.'</td>
@@ -248,6 +252,8 @@
                 <td>'.$item->qty.'</td>
                 <td>'.$item->qty_ok.'</td>
                 <td>'.$item->qty_reject.'</td>
+                <td>'.$item->jumlah_sample.'</td>
+                <td>'.$item->jumlah_produksi.'</td>
                 <td>'.date('Y-m-d', strtotime($item->tgl_planning)).'</td>
                 <td>'.date('Y-m-d', strtotime($item->tgl_masuk)).'</td>
                 <td>'.$item->tgl_keluar.'</td>

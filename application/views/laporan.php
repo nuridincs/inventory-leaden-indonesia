@@ -33,6 +33,8 @@ $this->load->view('_partials/header');
                       <th>Qty</th>
                       <th>Qty Ok</th>
                       <th>Qty Reject</th>
+                      <th>Jumlah Sampel</th>
+                      <th>Total Produksi</th>
                       <th>Tanggal Planning</th>
                       <th>Tanggal Masuk</th>
                       <th>Tanggal Keluar</th>
@@ -44,6 +46,7 @@ $this->load->view('_partials/header');
                     $no = 0;
                     foreach($laporan as $data) {
                       $no++;
+                      $jumlah_produksi = $data->qty - $data->qty_reject;
                   ?>
                     <tr>
                       <td><?= $no; ?></td>
@@ -54,6 +57,8 @@ $this->load->view('_partials/header');
                       <td><?= $data->qty ?></td>
                       <td><?= $data->qty_ok ?></td>
                       <td><?= $data->qty_reject ?></td>
+                      <td><?= $data->jumlah_sample ?></td>
+                      <td><?= $jumlah_produksi ?></td>
                       <td><?= $data->tgl_planning ?></td>
                       <td><?= date("Y-m-d", strtotime($data->tgl_masuk)) ?></td>
                       <td><?= $data->tgl_keluar ?></td>

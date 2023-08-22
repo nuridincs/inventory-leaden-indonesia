@@ -30,9 +30,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <li class="<?php echo $this->uri->segment(2) == 'listBarangKeluar' ? 'active' : ''; ?>">
           <a href="<?php echo base_url(); ?>barang/listBarangKeluar" class="nav-link"><i class="fas fa-th"></i> <span>Barang Keluar</span></a>
         </li>
-        <li class="<?php echo $this->uri->segment(2) == 'laporanProduksi' ? 'active' : ''; ?>">
-          <a href="<?php echo base_url(); ?>barang/laporanProduksi" class="nav-link"><i class="fas fa-th"></i> <span>Hasil Laporan Produksi</span></a>
-        </li>
+        <!-- <li class="<?php //echo $this->uri->segment(2) == 'laporanProduksi' ? 'active' : ''; ?>">
+          <a href="<?php //echo base_url(); ?>barang/laporanProduksi" class="nav-link"><i class="fas fa-th"></i> <span>Hasil Laporan Produksi</span></a>
+        </li> -->
         <li class="<?php echo $this->uri->segment(2) == 'laporan' ? 'active' : ''; ?>">
           <a href="<?php echo base_url(); ?>barang/laporan" class="nav-link"><i class="fas fa-th"></i> <span>Laporan</span></a>
         </li>
@@ -45,10 +45,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           <li class="<?php echo $this->uri->segment(2) == 'listPlanning' ? 'active' : ''; ?>">
             <a class="nav-link" href="<?php echo base_url(); ?>barang/listPlanning"><i class="fas fa-folder-open"></i> <span>Planning - Produksi</span></a>
           </li>
-
-          <li class="<?php echo $this->uri->segment(2) == 'laporanProduksi' ? 'active' : ''; ?>">
-            <a href="<?php echo base_url(); ?>barang/laporanProduksi" class="nav-link"><i class="fas fa-th"></i> <span>Hasil Laporan Produksi</span></a>
+          <li class="<?php echo $this->uri->segment(2) == 'laporan' ? 'active' : ''; ?>">
+            <a href="<?php echo base_url(); ?>barang/laporan" class="nav-link"><i class="fas fa-th"></i> <span>Laporan</span></a>
           </li>
+          <!-- <li class="<?php // echo $this->uri->segment(2) == 'laporanProduksi' ? 'active' : ''; ?>">
+            <a href="<?php // echo base_url(); ?>barang/laporanProduksi" class="nav-link"><i class="fas fa-th"></i> <span>Hasil Laporan Produksi</span></a>
+          </li> -->
         <?php } ?>
 
         <?php
@@ -70,9 +72,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           <li class="<?php echo $this->uri->segment(2) == 'listPlanning' ? 'active' : ''; ?>">
             <a class="nav-link" href="<?php echo base_url(); ?>barang/listPlanning"><i class="fas fa-folder-open"></i> <span>Planning - Produksi</span></a>
           </li>
-          <li class="<?php echo $this->uri->segment(2) == 'laporanProduksi' ? 'active' : ''; ?>">
-            <a href="<?php echo base_url(); ?>barang/laporanProduksi" class="nav-link"><i class="fas fa-th"></i> <span>Hasil Laporan Produksi</span></a>
+          <li class="<?php echo $this->uri->segment(2) == 'laporan' ? 'active' : ''; ?>">
+            <a href="<?php echo base_url(); ?>barang/laporan" class="nav-link"><i class="fas fa-th"></i> <span>Laporan</span></a>
           </li>
+          <!-- <li class="<?php // echo $this->uri->segment(2) == 'laporanProduksi' ? 'active' : ''; ?>">
+            <a href="<?php // echo base_url(); ?>barang/laporanProduksi" class="nav-link"><i class="fas fa-th"></i> <span>Hasil Laporan Produksi</span></a>
+          </li> -->
         <?php } ?>
 
         <?php
