@@ -55,6 +55,24 @@
       return $query->result();
     }
 
+    public function getLaporanProduksiV2($selectedFilter = null)
+    {
+        $this->db->select('*');
+        $this->db->from('app_barangs');
+        $this->db->join('app_master_barang', 'app_master_barang.kode_barang=app_barangs.kode_barang', 'left');
+
+        if (isset($selectedFilter)) {
+          if ($selectedFilter == 'ok') {
+            $this->db->where('app_barangs.qty_ok !=', 0);
+          } elseif ($selectedFilter == 'reject') {
+            $this->db->where('app_barangs.qty_reject !=', 0);
+          }
+        }
+
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     public function addData($table, $data)
     {
       $this->db->insert($table, $data);

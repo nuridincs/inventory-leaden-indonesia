@@ -98,9 +98,27 @@
 
     public function laporan()
     {
+      $selectedFilter = $this->input->post('selectedFilter');
       $data = array(
-        'title' => "Sistem Informasi Pengontrolan Produksi | Laporan",
-        'laporan' => $this->barang->getLaporanProduksi()
+        'title' => "Sistem Informasi Pengontrolan Produksi | Laporan OK",
+        'laporan' => $this->barang->getLaporanProduksiV2(),
+        'type' => 'all'
+      );
+
+      if (isset($selectedFilter)) {
+        $data['laporan'] = $this->barang->getLaporanProduksiV2($selectedFilter);
+        $data['type'] = $selectedFilter;
+      }
+
+      $this->load->view('laporan', $data);
+    }
+
+    public function laporanReject()
+    {
+      $data = array(
+        'title' => "Sistem Informasi Pengontrolan Produksi | Laporan Reject",
+        'laporan' => $this->barang->getLaporanProduksi(),
+        'type' => 'reject'
       );
 
       $this->load->view('laporan', $data);
@@ -174,9 +192,9 @@
       return $result;
     }
 
-    public function cetakLaporan($id_type = null)
+    public function cetakLaporan($selectedFilter = null)
     {
-      $data = $this->barang->getLaporanProduksi($id_type);
+      $data = $this->barang->getLaporanProduksiV2($selectedFilter);
 
       $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
@@ -214,11 +232,25 @@
       $pdf->AddPage('L');
 
       $html = '<div>';
-      if ($id_type != null) {
-        $html .= '<h1 align="center">Laporan Barang dengan Tipe '.$id_type.'</h1>';
-      } else {
+      $filterColumn = '
+        <th style="width:50px" align="center">Qty Ok</th>
+        <th style="width:50px" align="center">Qty Reject</th>
+      ';
+
+      if ($selectedFilter === 'all') {
         $html .= '<h1 align="center">Laporan Produksi</h1>';
       }
+
+      if ($selectedFilter === 'ok') {
+        $filterColumn = '<th style="width:50px" align="center">Qty Ok</th>';
+        $html .= '<h1 align="center">Laporan Produksi OK</h1>';
+      }
+
+      if ($selectedFilter === 'reject') {
+        $filterColumn = '<th style="width:50px" align="center">Qty Reject</th>';
+        $html .= '<h1 align="center">Laporan Produksi Reject</h1>';
+      }
+
       $html .='
           <table border="1" width="100" align="center">
             <tr>
@@ -228,8 +260,7 @@
               <th style="width:120px" align="center">Nama Barang</th>
               <th style="width:70px" align="center">Customer</th>
               <th style="width:50px" align="center">Qty</th>
-              <th style="width:50px" align="center">Qty Ok</th>
-              <th style="width:50px" align="center">Qty Reject</th>
+              '.$filterColumn.'
               <th style="width:50px" align="center">Jumlah Sampel</th>
               <th style="width:50px" align="center">Total Produksi</th>
               <th style="width:80px" align="center">Tanggal Planning</th>
@@ -242,6 +273,14 @@
             foreach($data as $item) {
               $no++;
               $jumlah_produksi = $item->qty - $item->qty_reject;
+              $filterRowData = '<td>'.$item->qty_ok.'</td><td>'.$item->qty_reject.'</td>';
+
+              if ($selectedFilter === 'all' || $selectedFilter === 'ok') {
+                $filterRowData = '<td>'.$item->qty_ok.'</td>';
+              }
+              if ($selectedFilter === 'all' || $selectedFilter === 'reject') {
+                $filterRowData = '<td>'.$item->qty_reject.'</td>';
+              }
 
               $html .= '<tr>
                 <td>'.$no.'</td>
@@ -250,8 +289,7 @@
                 <td>'.$item->nama_barang.'</td>
                 <td>'.$item->customer.'</td>
                 <td>'.$item->qty.'</td>
-                <td>'.$item->qty_ok.'</td>
-                <td>'.$item->qty_reject.'</td>
+                '.$filterRowData.'
                 <td>'.$item->jumlah_sample.'</td>
                 <td>'.$item->jumlah_produksi.'</td>
                 <td>'.date('Y-m-d', strtotime($item->tgl_planning)).'</td>

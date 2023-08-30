@@ -18,9 +18,29 @@ $this->load->view('_partials/header');
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <a href="<?= base_url() ?>barang/cetakLaporan" class="btn btn-danger mb-4">Cetak Laporan</a>
-              <!-- <a href="<?// = base_url() ?>barang/cetakLaporan/100" class="btn btn-info mb-4">Cetak Tipe 100</a>
-              <a href="<?//= base_url() ?>barang/cetakLaporan/200" class="btn btn-primary mb-4">Cetak Tipe 200 </a> -->
+              <div class="row">
+                <div class="col-2">
+                  <h5 class="m-0 text-dark mb-2">Laporan</h5>
+                  <a href="<?= base_url() ?>barang/cetakLaporan/<?= $type ?>" class="btn btn-danger mb-4">Cetak Laporan</a>
+                </div>
+                <div class="col-4">
+                  <h5 class="m-0 text-dark mb-2">Filter</h5>
+                    <form action="<?= base_url('barang/laporan'); ?>" method="post">
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <select class="form-control" name="selectedFilter">
+                            <option value="all">Semua</option>
+                            <option value="ok">OK</option>
+                            <option value="reject">Reject</option>
+                          </select>
+                        </div>
+                        <div class="col-sm-6">
+                          <input type="submit" class="btn btn-primary" value="Search"></input>
+                        </div>
+                      </div>
+                    </form>
+                </div>
+              </div>
               <div class="table-responsive">
                 <table class="table table-striped" id="table-1">
                   <thead>
@@ -31,8 +51,12 @@ $this->load->view('_partials/header');
                       <th>Nama Barang</th>
                       <th>Customer</th>
                       <th>Qty</th>
+                      <?php if ($type === "all" || $type === "ok" ) { ?>
                       <th>Qty Ok</th>
+                      <?php } ?>
+                      <?php if ($type === "all" || $type === "reject") { ?>
                       <th>Qty Reject</th>
+                      <?php } ?>
                       <th>Jumlah Sampel</th>
                       <th>Total Produksi</th>
                       <th>Tanggal Planning</th>
@@ -55,8 +79,12 @@ $this->load->view('_partials/header');
                       <td><?= $data->nama_barang ?></td>
                       <td><?= $data->customer ?></td>
                       <td><?= $data->qty ?></td>
+                      <?php if ($type === "all" || $type === "ok" ) { ?>
                       <td><?= $data->qty_ok ?></td>
+                      <?php } ?>
+                      <?php if ($type === "all" || $type === "reject") { ?>
                       <td><?= $data->qty_reject ?></td>
+                      <?php } ?>
                       <td><?= $data->jumlah_sample ?></td>
                       <td><?= $jumlah_produksi ?></td>
                       <td><?= $data->tgl_planning ?></td>
